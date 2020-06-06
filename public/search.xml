@@ -4,19 +4,25 @@
   
     
     <entry>
-      <title>测试图片</title>
-      <link href="/2020/05/31/%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87/"/>
-      <url>/2020/05/31/%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87/</url>
+      <title>建站历程</title>
+      <link href="/p/39507609.html"/>
+      <url>/p/39507609.html</url>
       
-        <content type="html"><![CDATA[<p>测试图片</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在建立这个博客的时候，我一直考虑在哪里托管静态页面</span><br><span class="line">如下是我几次托管的经历，站在自身的角度，判断他们的特点。</span><br></pre></td></tr></table></figure><h3 id="GitHub-Page"><a href="#GitHub-Page" class="headerlink" title="GitHub Page"></a>GitHub Page</h3><ol><li><p>优点：建站很快，无需自己搭建服务器，基于GIT方便版本控制，免费300M存储空间，绑定域名容易，直接解析CNAME指向即可，重点他<strong>免费！！</strong></p></li><li><p>缺点：访问速度奇慢无比</p></li></ol><h3 id="Ali-OSS"><a href="#Ali-OSS" class="headerlink" title="Ali OSS"></a>Ali OSS</h3><ol><li><p>优点：托管方便，访问速度快，在阿里云强大的数据系统下，可以监测网站各项数据，对于阿里云OSS各项优点一一不再赘述，了解过对象存储的同学应该都知道，对于没了解的同学可以<a href="https://www.alibabacloud.com/help/zh/doc-detail/31818.htm?spm=a2c63.p38356.b99.5.1a3e4c208lSNMv" target="_blank" rel="noopener">点此了解</a>。</p></li><li><p>缺点：流量不可控，除了贵没啥好说的，另外部署静态页面比较麻烦，hexo生成的静态博客很多都是以文件夹形式的，然后默认省略了index.html。而对于阿里云的OSS来说，并不会默认访问文件夹下的index.html，所以，生成的时候需要对源码进行调整，<a href="https://zengwu.com.cn/p/dd7e8a7b.html" target="_blank" rel="noopener">具体步骤</a>。因此最后放弃了OSS部署，先把OSS作为图床。</p></li></ol><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-06/ossfee.png" alt="OSS计费"></p><h3 id="Ali-ECS"><a href="#Ali-ECS" class="headerlink" title="Ali ECS"></a>Ali ECS</h3><ol><li>优点：方便管理，容易迁移，访问速度快</li><li>缺点：Nginx有时候会宕机，不过设置了开机自启动和阿里云进程报警，也还能接受。</li></ol>]]></content>
       
       
       <categories>
           
-          <category> 服务端 </category>
+          <category> 随笔 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
       
     </entry>
     
