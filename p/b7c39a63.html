@@ -88,7 +88,7 @@
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/NIO.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/buffer.png">
 <meta property="article:published_time" content="2020-06-12T11:02:00.000Z">
-<meta property="article:modified_time" content="2020-06-12T12:03:44.235Z">
+<meta property="article:modified_time" content="2020-06-12T12:08:44.537Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="NIO">
 <meta property="article:tag" content="高并发">
@@ -483,8 +483,8 @@
 </tr>
 </tbody></table>
 <ol>
-<li>BIO缺点<br><br> a.阻塞：导致效率整体降低。<br><br>b.一对一连接：客户端每过来一个请求，那么在服务端就需要一个线程去处理这个请求。如果客户端产生大量的请求，会导致服务端也产生大量的线程去处理请求，服务器端的线程数量一旦过多，会导致服务器的卡顿甚至崩溃。<br><br>c.如果客户端连接之后不产生任何操作，依然会占用服务端的线程，导致服务器资源的浪费。<br> </li>
-<li>面向流与面向缓冲<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java NIO和IO之间第一个最大的区别是，IO是面向流的.NIO是面向缓冲区的。Java IO面向流意味着毎次从流中读一个成多个字节，直至读取所有字节，它们没有被缓存在任何地方，此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的教据，需要先将它缓存到一个缓冲区。Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，霱要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数裾。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。</li>
+<li>BIO缺点<br><br> a.阻塞：导致效率整体降低。<br>b.一对一连接：客户端每过来一个请求，那么在服务端就需要一个线程去处理这个请求。如果客户端产生大量的请求，会导致服务端也产生大量的线程去处理请求，服务器端的线程数量一旦过多，会导致服务器的卡顿甚至崩溃。<br>c.如果客户端连接之后不产生任何操作，依然会占用服务端的线程，导致服务器资源的浪费。</li>
+<li>面向流与面向缓冲<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Java NIO和IO之间第一个最大的区别是，IO是面向流的.NIO是面向缓冲区的。Java IO面向流意味着毎次从流中读一个成多个字节，直至读取所有字节，它们没有被缓存在任何地方，此外，它不能前后移动流中的数据。如果需要前后移动从流中读取的教据，需要先将它缓存到一个缓冲区。Java NIO的缓冲导向方法略有不同。数据读取到一个它稍后处理的缓冲区，霱要时可在缓冲区中前后移动。这就增加了处理过程中的灵活性。但是，还需要检查是否该缓冲区中包含所有您需要处理的数裾。而且，需确保当更多的数据读入缓冲区时，不要覆盖缓冲区里尚未处理的数据。</li>
 </ol>
 <h2 id="Buffer-缓存区"><a href="#Buffer-缓存区" class="headerlink" title="Buffer - 缓存区"></a>Buffer - 缓存区</h2><ol>
 <li>作用存储数据</li>
