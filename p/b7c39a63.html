@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差;  如果网络I&#x2F;O堵塞或者有网络抖动或者网络故障等,线程的阻塞时间可能很长">
+<meta name="description" content="NIOauthor: MolZhaoabbrlink: b7c39a63tags:  NIO 高并发categories: JAVAdate: 2020-06-12 19:02:00   高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="同步非阻塞IO---NIO">
 <meta property="og:url" content="http://yoursite.com/p/b7c39a63.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差;  如果网络I&#x2F;O堵塞或者有网络抖动或者网络故障等,线程的阻塞时间可能很长">
+<meta property="og:description" content="NIOauthor: MolZhaoabbrlink: b7c39a63tags:  NIO 高并发categories: JAVAdate: 2020-06-12 19:02:00   高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/NIO.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/buffer.png">
 <meta property="article:published_time" content="2020-06-12T11:02:00.000Z">
-<meta property="article:modified_time" content="2020-06-12T12:18:05.308Z">
+<meta property="article:modified_time" content="2020-06-12T12:20:40.206Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="NIO">
 <meta property="article:tag" content="高并发">
@@ -425,7 +425,14 @@
       
 
       
-        <h2 id="高并发引起的问题"><a href="#高并发引起的问题" class="headerlink" title="高并发引起的问题"></a>高并发引起的问题</h2><p>一个使用传统阻塞I/O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题： </p>
+        <p>NIO<br>author: MolZhao<br>abbrlink: b7c39a63<br>tags:</p>
+<ul>
+<li>NIO</li>
+<li>高并发<br>categories:</li>
+<li>JAVA<br>date: 2020-06-12 19:02:00</li>
+</ul>
+<hr>
+<h2 id="高并发引起的问题"><a href="#高并发引起的问题" class="headerlink" title="高并发引起的问题"></a>高并发引起的问题</h2><p>一个使用传统阻塞I/O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题： </p>
 <ol>
 <li>线程不够用, 就算使用了线程池复用线程也无济于事; </li>
 <li>阻塞I/O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差; </li>
@@ -487,10 +494,10 @@
 <li>作用存储数据</li>
 <li>容器：数组，针对基本类型提供了其中对应的Buffer（boolean类型除外）</li>
 <li>重要位置： capacity &gt;= limit &gt;= position &gt;= mark<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/buffer.png" alt="Buffer"><br><b>容量（Capacity）：</b>缓冲区能够容纳的数据元素的最大数量。这一个容量在缓冲区创建时被设定，并且永远不能改变。<br><b>上界(Limit)：</b>限制位。用于限制操作位所能达到的最大位置。缓冲区刚创建时，limit和capacity重合<br><b>位置(Position)：</b>下一个要被读或写的元素的索引。用于执行要读写的位置。默认pisition为0。<br><b>标记(Mark)：</b>下一个要被读或写的元素的索引。类似于数组的下标，用于执行要读写的位置。默认情况下mark为-1</li>
-<li>重要操作</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; flip:翻转缓冲区</span><br><span class="line">public final Buffer flip() &#123;</span><br><span class="line">	limit &#x3D; position;</span><br><span class="line">   position &#x3D; 0;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; clear:清空缓冲区</span><br><span class="line">public final Buffer clear() &#123;</span><br><span class="line">	position &#x3D; 0;</span><br><span class="line">   limit &#x3D;  capacity;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; reset:重置缓冲区</span><br><span class="line">public final Buffer rewind() &#123;</span><br><span class="line">	postion &#x3D; 0;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>重要操作<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; flip:翻转缓冲区</span><br><span class="line">public final Buffer flip() &#123;</span><br><span class="line">	limit &#x3D; position;</span><br><span class="line">   position &#x3D; 0;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; clear:清空缓冲区</span><br><span class="line">public final Buffer clear() &#123;</span><br><span class="line">	position &#x3D; 0;</span><br><span class="line">   limit &#x3D;  capacity;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; reset:重置缓冲区</span><br><span class="line">public final Buffer rewind() &#123;</span><br><span class="line">	postion &#x3D; 0;</span><br><span class="line">   mark &#x3D; -1;</span><br><span class="line">   return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+</li>
+</ol>
 <h2 id="Channel-通道"><a href="#Channel-通道" class="headerlink" title="Channel - 通道"></a>Channel - 通道</h2><ol>
 <li>作用：传输数据。</li>
 <li>分类：<br> a.文件 - FileChannel<br>b.UDP - DatagramChannel<br>c.TCP - SocketChannel、ServerSocketChannel</li>
