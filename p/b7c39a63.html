@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="NIOauthor: MolZhaoabbrlink: b7c39a63tags:  NIO 高并发categories: JAVAdate: 2020-06-12 19:02:00   高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,">
+<meta name="description" content="高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差;  如果网络I&#x2F;O堵塞或者有网络抖动或者网络故障等,线程的阻塞时间可能很长">
 <meta property="og:type" content="article">
 <meta property="og:title" content="同步非阻塞IO---NIO">
 <meta property="og:url" content="http://yoursite.com/p/b7c39a63.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="NIOauthor: MolZhaoabbrlink: b7c39a63tags:  NIO 高并发categories: JAVAdate: 2020-06-12 19:02:00   高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,">
+<meta property="og:description" content="高并发引起的问题一个使用传统阻塞I&#x2F;O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题：   线程不够用, 就算使用了线程池复用线程也无济于事;  阻塞I&#x2F;O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差;  如果网络I&#x2F;O堵塞或者有网络抖动或者网络故障等,线程的阻塞时间可能很长">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/NIO.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-12/buffer.png">
 <meta property="article:published_time" content="2020-06-12T11:02:00.000Z">
-<meta property="article:modified_time" content="2020-06-12T12:20:40.206Z">
+<meta property="article:modified_time" content="2020-06-12T12:23:27.866Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="NIO">
 <meta property="article:tag" content="高并发">
@@ -425,14 +425,7 @@
       
 
       
-        <p>NIO<br>author: MolZhao<br>abbrlink: b7c39a63<br>tags:</p>
-<ul>
-<li>NIO</li>
-<li>高并发<br>categories:</li>
-<li>JAVA<br>date: 2020-06-12 19:02:00</li>
-</ul>
-<hr>
-<h2 id="高并发引起的问题"><a href="#高并发引起的问题" class="headerlink" title="高并发引起的问题"></a>高并发引起的问题</h2><p>一个使用传统阻塞I/O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题： </p>
+        <h2 id="高并发引起的问题"><a href="#高并发引起的问题" class="headerlink" title="高并发引起的问题"></a>高并发引起的问题</h2><p>一个使用传统阻塞I/O的系统,如果还是使用传统的一个请求对应一个线程这种模式,一旦有高并发的大量请求,就会有如下问题： </p>
 <ol>
 <li>线程不够用, 就算使用了线程池复用线程也无济于事; </li>
 <li>阻塞I/O模式下,会有大量的线程被阻塞,一直在等待数据,这个时候的线程被挂起,只能干等,CPU利用率很低,换句话说,系统的吞吐量差; </li>
