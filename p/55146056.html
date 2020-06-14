@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="高并发,Mina," />
 
 
 
@@ -79,14 +79,20 @@
 
 
 
-<meta name="description" content="沉淀">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Molzhao">
-<meta property="og:url" content="http://yoursite.com/categories/%E9%9A%8F%E7%AC%94/index.html">
+<meta name="description" content="前言因为公司需要重构一个老项目，老项目的网络通信框架用的是Mina，现在需要迁移到Netty实现，所以趁着空闲的时间学习一下Mina。 Mina框架概述Apache Mina是一个能够帮助用户开发高性能和高伸缩性网络应用程序的框架。它通过Java nio技术基于TCP&#x2F;IP和UDP&#x2F;IP协议提供了抽象的、事件驱动的、异步的API。学习Mina，需要你已掌握Java IO,Java NIO,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络通信框架（1）---Mina">
+<meta property="og:url" content="http://yoursite.com/p/55146056.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="沉淀">
+<meta property="og:description" content="前言因为公司需要重构一个老项目，老项目的网络通信框架用的是Mina，现在需要迁移到Netty实现，所以趁着空闲的时间学习一下Mina。 Mina框架概述Apache Mina是一个能够帮助用户开发高性能和高伸缩性网络应用程序的框架。它通过Java nio技术基于TCP&#x2F;IP和UDP&#x2F;IP协议提供了抽象的、事件驱动的、异步的API。学习Mina，需要你已掌握Java IO,Java NIO,Java">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-13/mina.png">
+<meta property="article:published_time" content="2020-06-13T07:04:00.000Z">
+<meta property="article:modified_time" content="2020-06-14T14:09:41.362Z">
 <meta property="article:author" content="MolZhao">
+<meta property="article:tag" content="高并发">
+<meta property="article:tag" content="Mina">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-13/mina.png">
 
 
 
@@ -116,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/随笔/"/>
+  <link rel="canonical" href="http://yoursite.com/p/55146056.html"/>
 
 
 
 
 
-  <title>分类: 随笔 | Molzhao</title>
+  <title>网络通信框架（1）---Mina | Molzhao</title>
   
 
 
@@ -141,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -279,55 +285,249 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>随笔<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/55146056.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MolZhao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Molzhao">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/p/39507609.html" itemprop="url">
-              
-                <span itemprop="name">建站历程</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">网络通信框架（1）---Mina</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-06-05T23:50:00+08:00"
-              content="2020-06-05" >
-          06-05
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-13T15:04:00+08:00">
+                2020-06-13
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%92%E8%81%94%E7%BD%91%E6%9E%B6%E6%9E%84/index.html" itemprop="url" rel="index">
+                    <span itemprop="name">互联网架构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  660 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为公司需要重构一个老项目，老项目的网络通信框架用的是Mina，现在需要迁移到Netty实现，所以趁着空闲的时间学习一下Mina。</p>
+<h2 id="Mina框架概述"><a href="#Mina框架概述" class="headerlink" title="Mina框架概述"></a>Mina框架概述</h2><p>Apache Mina是一个能够帮助用户开发高性能和高伸缩性网络应用程序的框架。它通过Java nio技术基于TCP/IP和UDP/IP协议提供了抽象的、事件驱动的、异步的API。<br>学习Mina，需要你已掌握Java IO,Java NIO,Java Socket,Java线程及并发库(java.util.concurrent包)知识。<br>Mina同时提供了网络通信的Server端、Client端的封装。<br>Mina的底层依赖的主要是Java NIO库，上层提供的是基于事件的异步接口。<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-13/mina.png" alt="Mina架构"></p>
+<h2 id="Mina主要接口"><a href="#Mina主要接口" class="headerlink" title="Mina主要接口"></a>Mina主要接口</h2><table>
+<thead>
+<tr>
+<th>包名</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>org.apache.mina.core.buffer</td>
+<td align="center">用于缓冲区的IoBuffer</td>
+</tr>
+<tr>
+<td>org.apache.mina.core.service org.apache.mina.transport.*</td>
+<td align="center">用于提供连接的service</td>
+</tr>
+<tr>
+<td>org.apache.mina.core.session</td>
+<td align="center">用于提供两端状态的session</td>
+</tr>
+<tr>
+<td>org.apache.mina.core.filterchain org.apache.mina.filter.*</td>
+<td align="center">用于拦截所有IO事件和请求的filter chain和各类拦截器（在IoService和IoHandler之间）</td>
+</tr>
+<tr>
+<td>org.apache.mina.handler.*</td>
+<td align="center">用于处理IO事件的handler</td>
+</tr>
+<tr>
+<td>org.apache.mina.core.future</td>
+<td align="center">用于实现异步IO操作的 future</td>
+</tr>
+<tr>
+<td>org.apache.mina.core.polling.*</td>
+<td align="center">用于实现IO轮询的的polling</td>
+</tr>
+<tr>
+<td>org.apache.mina.proxy.*</td>
+<td align="center">用于实现代理的proxy</td>
+</tr>
+</tbody></table>
+<p><b>IoService:</b><br>这个接口在一个线程上负责套接字的建立，拥有自己的 Selector，监听是否有连接被建立。<br><b>IoProcessor:</b><br>这个接口在另一个线程丧负责检查是否有数据在通道中读写，也就是说它也拥有自己的Selector，这是与我们使用Java NIO编码时的一个不同之处，通常在Java NIO编码中，我们都是使用一个Selector，也就是不区分IoService和IoProcessor两个功能接口，另外IoProcessor负责调用在IoService上的过滤器，并在过滤器链之后调用IoHandler<br><b>IoAccepter:</b><br>相当于网络应用程序中的服务器端<br><b>IoConnector:</b><br>相当于客户端<br><b>IoSession:</b><br>当前客户端到服务器端的一个连接实例<br><b>IoHandler:</b><br>这个接口负责编写业务逻辑，也就是接收、发送数据的地方。这也是实际开发过程中需要用户自己编写的部分代码。<br><b>IoFilter :</b><br>过滤器用于悬接通讯层接口与业务层接口，这个接口定义一组拦截器，这些拦截器可以包括日志输出、黑名单过滤、数据的编码（write 方向）与解码（read 方向）等功能，其中数据的 encode与 decode是最为重要的、也是你在使用 Mina时最主要关注的地方。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E9%AB%98%E5%B9%B6%E5%8F%91/index.html" rel="tag"># 高并发</a>
+          
+            <a href="/tags/Mina/index.html" rel="tag"># Mina</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/p/b7c39a63.html" rel="next" title="同步非阻塞IO---NIO">
+                <i class="fa fa-chevron-left"></i> 同步非阻塞IO---NIO
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -335,6 +535,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -355,8 +559,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -436,6 +649,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mina框架概述"><span class="nav-number">2.</span> <span class="nav-text">Mina框架概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mina主要接口"><span class="nav-number">3.</span> <span class="nav-text">Mina主要接口</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -598,6 +827,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
