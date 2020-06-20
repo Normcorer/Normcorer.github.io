@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="简单的TCPServerMina案例源码 第一步：编写IoService编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAccep">
+<meta name="description" content="Mina案例源码 简单的TCPServer第一步：编写IoService编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAccep">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络通信框架（2）---Mina">
 <meta property="og:url" content="http://yoursite.com/p/999bcd34.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="简单的TCPServerMina案例源码 第一步：编写IoService编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAccep">
+<meta property="og:description" content="Mina案例源码 简单的TCPServer第一步：编写IoService编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAccep">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-20/%E5%8D%8F%E8%AE%AE%E7%BC%96%E8%A7%A3%E7%A0%81%E5%99%A8.png">
 <meta property="article:published_time" content="2020-06-19T17:57:00.000Z">
-<meta property="article:modified_time" content="2020-06-19T18:12:55.332Z">
+<meta property="article:modified_time" content="2020-06-20T04:18:58.501Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="高并发">
 <meta property="article:tag" content="Mina">
@@ -424,8 +424,8 @@
       
 
       
-        <h2 id="简单的TCPServer"><a href="#简单的TCPServer" class="headerlink" title="简单的TCPServer"></a>简单的TCPServer</h2><p><a href="https://github.com/Normcorer/MinaDemo.git" target="_blank" rel="noopener">Mina案例源码</a></p>
-<h3 id="第一步：编写IoService"><a href="#第一步：编写IoService" class="headerlink" title="第一步：编写IoService"></a>第一步：编写IoService</h3><p>编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAcceptor，实际上底层就是调用java.nio.channels.ServerSocketChannel 类。当然，如果你使用了Apache 的APR 库，那么你可以选择使AprSocketAcceptor 作为TCPServer 的实现，据传说Apache APR库的性能比JVM 自带的本地库高出很多。那么IoProcessor 是由指定的IoService 内部创建并调用的，我们并不需要关心。</p>
+        <p><a href="https://github.com/Normcorer/MinaDemo.git" target="_blank" rel="noopener">Mina案例源码</a></p>
+<h2 id="简单的TCPServer"><a href="#简单的TCPServer" class="headerlink" title="简单的TCPServer"></a>简单的TCPServer</h2><h3 id="第一步：编写IoService"><a href="#第一步：编写IoService" class="headerlink" title="第一步：编写IoService"></a>第一步：编写IoService</h3><p>编写IoService，按照上面的执行流程，我们首先需要编写IoService，IoService 本身既是服务端，又是客户端，我们这里编写服务端，所以使用IoAcceptor 实现，由于IoAcceptor 是与协议无关的，因为我们要编写TCPServer，所以我们使用IoAcceptor 的实现NioSocketAcceptor，实际上底层就是调用java.nio.channels.ServerSocketChannel 类。当然，如果你使用了Apache 的APR 库，那么你可以选择使AprSocketAcceptor 作为TCPServer 的实现，据传说Apache APR库的性能比JVM 自带的本地库高出很多。那么IoProcessor 是由指定的IoService 内部创建并调用的，我们并不需要关心。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">IoAcceptor acceptor &#x3D; new NioSocketAcceptor();</span><br><span class="line">        acceptor.getSessionConfig().setReadBufferSize(2048);</span><br><span class="line">        acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;设置过滤器</span><br><span class="line">&#x2F;&#x2F;...</span><br><span class="line">&#x2F;&#x2F;设置handler</span><br><span class="line">&#x2F;&#x2F;绑定端口</span><br><span class="line">acceptor.bind(new InetSocketAddress(9124));</span><br></pre></td></tr></table></figure>
 <p>这段代码我们初始化了服务端的TCP/IP 的基于NIO 的套接字，然后调用IoSessionConfig设置读取数据的缓冲区大小、读写通道均在10 秒内无任何操作就进入空闲状态。</p>
 <h3 id="第二步：编写过滤器"><a href="#第二步：编写过滤器" class="headerlink" title="第二步：编写过滤器"></a>第二步：编写过滤器</h3><p>这里我们处理最简单的字符串传输，Mina 已经为我们提供了TextLineCodecFactory 编解码器工厂来对字符串进行编解码处理</p>
