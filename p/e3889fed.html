@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/crontab%E5%86%99%E6%B3%95.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%97%A5%E5%BF%97.png">
 <meta property="article:published_time" content="2020-06-30T15:17:00.000Z">
-<meta property="article:modified_time" content="2020-06-30T16:13:29.285Z">
+<meta property="article:modified_time" content="2020-06-30T16:15:44.241Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="CentOS">
 <meta property="article:tag" content="定时任务">
@@ -389,7 +389,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  647 字
+                  648 字
                 </span>
               
 
@@ -435,11 +435,11 @@
 </ul>
 <p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E6%9F%A5%E7%9C%8B%E5%AE%9A%E6%97%B6%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81.png" alt="查看定时服务状态"></p>
 <ul>
-<li>使用crontab -e来创建一个定时任务<br>首先我们简单的创建一个shell脚本,输出一个hello world<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world!&quot;</span><br></pre></td></tr></table></figure>
+<li>使用crontab -e来创建一个定时任务<br>首先我们简单的创建一个shell脚本,输出一个hello world</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world!&quot;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;crontab</span><br></pre></td></tr></table></figure>
 
-</li>
-</ul>
 <p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/crontab%E5%86%99%E6%B3%95.png" alt="cron写法"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#然后输入来创建当前用户下的定时任务</span><br><span class="line">crontab -e</span><br><span class="line">#在该定时任务文件下，写入任务脚本，该任务表示每5分钟跑一次</span><br><span class="line">5 * * * * sh&#x2F;home&#x2F;sh&#x2F;helloworld.sh</span><br></pre></td></tr></table></figure>
 <ul>
