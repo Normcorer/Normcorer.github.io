@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="代码质量," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言在重构这本书中，我接触到了状态模式，重构中把State&#x2F;Strategy两个模式放在一起说，当时我也不太理解，因为光看类图，这两个模式真的差别不大。之后我会在写一篇博客主要讲诉这两个设计模式的区别。在这篇博客中我学习了一遍状态模式，为了方便理解，写了一个简单的英雄联盟抽皮肤的小案例。案例代码我会放在Github上，在本文最后会附上地址。  定义与特点定义：对有状态的对象，把复杂的判断逻辑提取到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="状态模式实现简单英雄联盟抽皮肤案例">
+<meta property="og:url" content="http://yoursite.com/p/cae41fc2.html">
+<meta property="og:site_name" content="Molzhao">
+<meta property="og:description" content="前言在重构这本书中，我接触到了状态模式，重构中把State&#x2F;Strategy两个模式放在一起说，当时我也不太理解，因为光看类图，这两个模式真的差别不大。之后我会在写一篇博客主要讲诉这两个设计模式的区别。在这篇博客中我学习了一遍状态模式，为了方便理解，写了一个简单的英雄联盟抽皮肤的小案例。案例代码我会放在Github上，在本文最后会附上地址。  定义与特点定义：对有状态的对象，把复杂的判断逻辑提取到">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-16/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F.jpg">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-16/%E7%AE%80%E5%8D%95%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F%E6%8A%BD%E7%9A%AE%E8%82%A4%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
+<meta property="article:published_time" content="2020-08-16T09:16:00.000Z">
+<meta property="article:modified_time" content="2020-08-16T12:09:43.480Z">
+<meta property="article:author" content="MolZhao">
+<meta property="article:tag" content="代码质量">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-16/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"我们没有找到任何搜索结果: ${query}","hits_stats":"找到约${hits}条结果 (用时 ${time}ms)"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/p/cae41fc2.html"/>
+
+
+
+
+
+  <title>状态模式实现简单英雄联盟抽皮肤案例 | Molzhao</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Molzhao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/index.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/index.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/index.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/index.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/cae41fc2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="MolZhao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Molzhao">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">状态模式实现简单英雄联盟抽皮肤案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-16T17:16:00+08:00">
+                2020-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.6k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在重构这本书中，我接触到了状态模式，重构中把State/Strategy两个模式放在一起说，当时我也不太理解，因为光看类图，这两个模式真的差别不大。之后我会在写一篇博客主要讲诉这两个设计模式的区别。<br>在这篇博客中我学习了一遍状态模式，为了方便理解，写了一个简单的英雄联盟抽皮肤的小案例。案例代码我会放在Github上，在本文最后会附上地址。</p>
+<hr>
+<h2 id="定义与特点"><a href="#定义与特点" class="headerlink" title="定义与特点"></a>定义与特点</h2><p><strong>定义：</strong><br>对有<code>状态</code>的对象，把复杂的判断逻辑提取到不同的状态对象中，允许状态对象在其内部状态改变时改变其行为。主要是解决的这个对象的复杂状态的切换。</p>
+<p><strong>优点：</strong></p>
+<blockquote>
+<p>1.状态模式将与特定状态相关的行为局部化到一个状态中，并且将不同状态的行为分割开来，满足“单一职责原则”。<br>2.减少对象间的相互依赖。将不同的状态引入独立的对象中会使得状态转换变得更加明确，且减少对象间的相互依赖。<br>3.有利于程序的扩展。通过定义新的子类很容易地增加新的状态和转换。</p>
+</blockquote>
+<p><strong>缺点：</strong></p>
+<blockquote>
+<p>1.状态模式的使用必然会增加系统的类与对象的个数。<br>2.状态模式的结构与实现都较为复杂，如果使用不当会导致程序结构和代码的混乱。</p>
+</blockquote>
+<p>状态模式主要允许一个对象在其内部状态发生改变时同时改变他的行为，看起来似乎修改了它的类。我这里就不总结他的定义与特点了，下面文章总结已经很清楚了。<br><a href="http://c.biancheng.net/view/1388.html" target="_blank" rel="noopener">状态模式定义与特点原文链接</a></p>
+<hr>
+<h2 id="状态模式的结构"><a href="#状态模式的结构" class="headerlink" title="状态模式的结构"></a>状态模式的结构</h2><p>状态模式包含以下主要角色：</p>
+<ol>
+<li>环境（Context）角色：也称为上下文，它定义了客户感兴趣的接口，维护一个当前状态，并将与状态相关的操作委托给当前状态对象来处理。</li>
+<li>抽象状态（State）角色：定义一个接口，用以封装环境对象中的特定状态所对应的行为，根据业务需求可以写多个方法来改变当前的对象的状态。</li>
+<li>具体状态（Concrete State）角色：实现抽象状态所对应的行为。</li>
+</ol>
+<p>如下是状态模式的结构：<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-16/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F.jpg" alt="状态模式结构"></p>
+<hr>
+<h2 id="简单英雄联盟抽皮肤案例"><a href="#简单英雄联盟抽皮肤案例" class="headerlink" title="简单英雄联盟抽皮肤案例"></a>简单英雄联盟抽皮肤案例</h2><h3 id="案例介绍"><a href="#案例介绍" class="headerlink" title="案例介绍"></a>案例介绍</h3><p>以简单英雄联盟抽皮肤为例，当一个用户的操作有（充值、退款、抽奖、获得皮肤）四个状态，根据用户不同的操作状态，会有不同的行为。<br>1.在未充值状态，用户只能选择充值这个动作，另外动作均不可以选择。<br>2.在已充值这个状态，用户可以继续充值，或者选择退款，当退款额度大于用户余额的时候会提示用户，当用户把余额退完会回到未充值状态。当用户账户有余额的时候可以操作抽奖动作。<br>3.在抽奖的时候，如果扣费成功，则会生成皮肤，如果扣费失败，则会提醒用户余额不足，并且根据余额多少回到未充值或者已充值状态。<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-16/%E7%AE%80%E5%8D%95%E8%8B%B1%E9%9B%84%E8%81%94%E7%9B%9F%E6%8A%BD%E7%9A%AE%E8%82%A4%E6%B5%81%E7%A8%8B.png" alt="简单英雄联盟抽奖流程图"><br>可以看的出来每个状态的切换都伴随这很多<code>IF-ELSE</code>，如果不采用设计模式，我们在扩展功能的时候会非常麻烦。</p>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><h4 id="环境角色（Context）"><a href="#环境角色（Context）" class="headerlink" title="环境角色（Context）"></a>环境角色（Context）</h4><p>这对应的是状态模式的环境角色（Context），他维护着用户的当前状态<code>currentState</code>，定义了客户的行为方法，还提供了一个设置当前状态的方法<code>setCurrentState(UserState currentState)</code>，来方便后面状态切换时候的使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.domain.UserAccount;</span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"><span class="keyword">import</span> com.zyj.state.UserState;</span><br><span class="line"><span class="keyword">import</span> com.zyj.state.ChargedState;</span><br><span class="line"><span class="keyword">import</span> com.zyj.state.LotteryState;</span><br><span class="line"><span class="keyword">import</span> com.zyj.state.NoChargeState;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkinLotteryContext</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 当前状态</span></span><br><span class="line">    UserState currentState;</span><br><span class="line">    <span class="comment">// 未充值状态</span></span><br><span class="line">    UserState noChargeState;</span><br><span class="line">    <span class="comment">// 已充值状态</span></span><br><span class="line">    UserState chargedState;</span><br><span class="line">    <span class="comment">// 抽奖中状态</span></span><br><span class="line">    UserState lotteryState;</span><br><span class="line"></span><br><span class="line">    UserAccount userAccount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SkinLotteryContext</span><span class="params">(UserAccount userAccount)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 获取客户账户</span></span><br><span class="line">        <span class="keyword">this</span>.userAccount = userAccount;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化当前状态，将当前状态设置为未充值状态</span></span><br><span class="line">        <span class="keyword">this</span>.currentState = <span class="keyword">new</span> NoChargeState(<span class="keyword">this</span>);</span><br><span class="line">        noChargeState = <span class="keyword">new</span> NoChargeState(<span class="keyword">this</span>);</span><br><span class="line">        chargedState = <span class="keyword">new</span> ChargedState(<span class="keyword">this</span>);</span><br><span class="line">        lotteryState = <span class="keyword">new</span> LotteryState(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Handler处理者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toCharge</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        currentState.toCharge(rechargeAmountEnum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        currentState.refund(rechargeAmountEnum);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lottery</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.lottery();</span><br><span class="line">        <span class="comment">// 抽奖结束，自动生成皮肤</span></span><br><span class="line">        generateSkin();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateSkin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.generateSkin();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getStatus</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        currentState.getState();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置当前的状态</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setCurrentState</span><span class="params">(UserState currentState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.currentState = currentState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">UserState <span class="title">getCurrentState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currentState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">UserState <span class="title">getNoChargeState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> noChargeState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">UserState <span class="title">getChargedState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> chargedState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">UserState <span class="title">getLotteryState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> lotteryState;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="抽象角色（State）"><a href="#抽象角色（State）" class="headerlink" title="抽象角色（State）"></a>抽象角色（State）</h4><p>这对应的是状态模式的抽象角色，他主要写了对象在不同状态下对应的行为，比如说用户的充值行为<code>toCharge()</code>,用户的退费行为<code>refund()</code>等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">UserState</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这是用户的操作动作。</span></span><br><span class="line"><span class="comment">     * 其实状态模式就是多条件判断的替代方案。</span></span><br><span class="line"><span class="comment">     * 在每个状态下，用户都有可能会执行下面的动作</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 默认抽奖一次为5个金币</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SkinLotteryContext skinLotteryContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserState</span><span class="params">(SkinLotteryContext skinLotteryContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.skinLotteryContext = skinLotteryContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 充值动作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">toCharge</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span></span>;</span><br><span class="line">    <span class="comment">// 退款动作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span></span>;</span><br><span class="line">    <span class="comment">// 抽奖动作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">lottery</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 生成皮肤动作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">generateSkin</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="comment">// 获取当前状态</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">getState</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="具体状态（Concrete-State）"><a href="#具体状态（Concrete-State）" class="headerlink" title="具体状态（Concrete State）"></a>具体状态（Concrete State）</h4><h5 id="未充值状态"><a href="#未充值状态" class="headerlink" title="未充值状态"></a>未充值状态</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 未充值状态</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoChargeState</span> <span class="keyword">extends</span> <span class="title">UserState</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NoChargeState</span><span class="params">(SkinLotteryContext skinLotteryContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(skinLotteryContext);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toCharge</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 为客户充值</span></span><br><span class="line">        skinLotteryContext.userAccount.charge(rechargeAmountEnum);</span><br><span class="line">        <span class="comment">// 打印余额</span></span><br><span class="line">        System.out.println(<span class="string">"您当前的余额为："</span> + skinLotteryContext.userAccount.getAmount());</span><br><span class="line">        <span class="comment">// 已经充值，转成已充值状态</span></span><br><span class="line">        skinLotteryContext.setCurrentState(skinLotteryContext.getChargedState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"对不起，您当前处于未充值状态"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lottery</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"对不起，未充值不能进行抽奖"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateSkin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"对不起，未充值不能生成皮肤"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前状态是：未充值状态"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="已充值状态"><a href="#已充值状态" class="headerlink" title="已充值状态"></a>已充值状态</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.constant.LotteryConstant;</span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 已充值状态</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChargedState</span> <span class="keyword">extends</span> <span class="title">UserState</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ChargedState</span><span class="params">(SkinLotteryContext skinLotteryContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(skinLotteryContext);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toCharge</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 为客户充值</span></span><br><span class="line">        skinLotteryContext.userAccount.charge(rechargeAmountEnum);</span><br><span class="line">        <span class="comment">// 打印余额</span></span><br><span class="line">        System.out.println(<span class="string">"您当前的余额为："</span> + skinLotteryContext.userAccount.getAmount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 客户退钱动作逻辑，在JavaBean中实现，判断余额是否充足</span></span><br><span class="line">        skinLotteryContext.userAccount.refund(rechargeAmountEnum);</span><br><span class="line">        <span class="comment">// 如果退费后当前余额为0，则返回未充值状态</span></span><br><span class="line">        <span class="keyword">if</span> (skinLotteryContext.userAccount.isEmpty()) &#123;</span><br><span class="line">            skinLotteryContext.setCurrentState(skinLotteryContext.getNoChargeState());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lottery</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 判断用户余额是否足够一次抽奖</span></span><br><span class="line">        <span class="keyword">if</span> (skinLotteryContext.userAccount.isEnough()) &#123;</span><br><span class="line">            <span class="comment">// 减去本次抽奖的费用</span></span><br><span class="line">            skinLotteryContext.userAccount.setAmount(skinLotteryContext.userAccount.getAmount().subtract(LotteryConstant.DEFAULT_COST));</span><br><span class="line">            <span class="comment">// 设置当前状态为抽奖中的状态</span></span><br><span class="line">            skinLotteryContext.setCurrentState(skinLotteryContext.getLotteryState());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">"当前账户余额不足，不能进行这次抽奖，当前余额："</span> + skinLotteryContext.userAccount.getAmount());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateSkin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"请在抽奖过后在进行操作"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前状态是：已充值状态"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="抽奖状态"><a href="#抽奖状态" class="headerlink" title="抽奖状态"></a>抽奖状态</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.state;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cn.hutool.core.util.RandomUtil;</span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.SkinEnum;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽奖中状态</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LotteryState</span> <span class="keyword">extends</span> <span class="title">UserState</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LotteryState</span><span class="params">(SkinLotteryContext skinLotteryContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(skinLotteryContext);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">toCharge</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抽奖中，不支持充值"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refund</span><span class="params">(RechargeAmountEnum rechargeAmountEnum)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"抽奖中，不支持退款"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lottery</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"正在抽奖中，请稍等之后再点击抽奖"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">generateSkin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"恭喜获得皮肤："</span> + SkinEnum.getDescriptionByValue(RandomUtil.randomInt(<span class="number">0</span>, <span class="number">10</span>)) + <span class="string">", 当前余额："</span> + skinLotteryContext.userAccount.getAmount());</span><br><span class="line">        <span class="comment">//判断抽完这次之后，用户是否还有余额，如果没有返回未充值状态</span></span><br><span class="line">        <span class="keyword">if</span> (skinLotteryContext.userAccount.isEmpty()) &#123;</span><br><span class="line">            skinLotteryContext.setCurrentState(skinLotteryContext.getNoChargeState());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            skinLotteryContext.setCurrentState(skinLotteryContext.getChargedState());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"当前状态是：抽奖中状态"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.domain.UserAccount;</span><br><span class="line"><span class="keyword">import</span> com.zyj.enumeration.RechargeAmountEnum;</span><br><span class="line"><span class="keyword">import</span> com.zyj.state.SkinLotteryContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SkinLotteryClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SkinLotteryContext skinLotteryContext = <span class="keyword">new</span> SkinLotteryContext(UserAccount.generateAccount(<span class="string">"用户1"</span>));</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        skinLotteryContext.toCharge(RechargeAmountEnum.THIRTY);</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        <span class="comment">// 第一次退费</span></span><br><span class="line">        skinLotteryContext.refund(RechargeAmountEnum.TEN);</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        <span class="comment">// 第二次退费</span></span><br><span class="line">        skinLotteryContext.refund(RechargeAmountEnum.TEN);</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        <span class="comment">// 第一次抽奖</span></span><br><span class="line">        skinLotteryContext.lottery();</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        <span class="comment">// 第二次抽奖</span></span><br><span class="line">        skinLotteryContext.lottery();</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">        <span class="comment">// 第三次抽奖</span></span><br><span class="line">        skinLotteryContext.lottery();</span><br><span class="line">        skinLotteryContext.getStatus();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">当前状态是：未充值状态</span><br><span class="line">您当前的余额为：30</span><br><span class="line">当前状态是：已充值状态</span><br><span class="line">退款成功，当前客户余额：20</span><br><span class="line">当前状态是：已充值状态</span><br><span class="line">退款成功，当前客户余额：10</span><br><span class="line">当前状态是：已充值状态</span><br><span class="line">恭喜获得皮肤：脉冲火-锐雯, 当前余额：5</span><br><span class="line">当前状态是：已充值状态</span><br><span class="line">恭喜获得皮肤：霸天异形-卡兹克, 当前余额：0</span><br><span class="line">当前状态是：未充值状态</span><br><span class="line">对不起，未充值不能进行抽奖</span><br><span class="line">对不起，未充值不能生成皮肤</span><br><span class="line">当前状态是：未充值状态</span><br></pre></td></tr></table></figure>
+<p>至于我是怎么生成皮肤的，我添加了皮肤的枚举类作为皮肤池，通过随机数随机抽取皮肤池中的皮肤实现，这样我们每增加一个皮肤只需要新增一个枚举就好了，符合开闭原则。<br>下面是我的皮肤枚举类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.enumeration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SkinEnum &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 参照国外LOL皮肤翻译</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    FRELJORD_ASHE(<span class="number">0</span> ,<span class="string">"弗雷尔卓德-艾希"</span>),</span><br><span class="line">    MEDIEVAL_TWITCH(<span class="number">1</span> ,<span class="string">"中世纪-图奇"</span>),</span><br><span class="line">    ASSASSIN_MASTER_YI(<span class="number">2</span>, <span class="string">"刺客-易大师"</span>),</span><br><span class="line">    RECON_TEEMO(<span class="number">3</span>, <span class="string">"侦察兵-提莫"</span>),</span><br><span class="line">    FORSAKEN_JAYCE(<span class="number">4</span>, <span class="string">"被遗弃者-杰斯"</span>),</span><br><span class="line">    ROYAL_SHACO(<span class="number">5</span>, <span class="string">"皇族-萨科"</span>),</span><br><span class="line">    JAIL_BREAK_GRAVES(<span class="number">6</span>, <span class="string">"越狱-格雷福斯"</span>),</span><br><span class="line">    MIDNIGHT_AHRI(<span class="number">7</span>, <span class="string">"午夜-阿狸"</span>),</span><br><span class="line">    PULSEFIRE_RIVEN(<span class="number">8</span>, <span class="string">"脉冲火-锐雯"</span>),</span><br><span class="line">    MECHA_KHA_ZIX(<span class="number">9</span>, <span class="string">"霸天异形-卡兹克"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer value;</span><br><span class="line">    <span class="keyword">private</span> String description;</span><br><span class="line"></span><br><span class="line">    SkinEnum(Integer value, String description) &#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">        <span class="keyword">this</span>.description = description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValue</span><span class="params">(Integer value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDescription</span><span class="params">(String description)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.description = description;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getDescriptionByValue</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.stream(values())</span><br><span class="line">                .filter(x -&gt; x.getValue().equals(value)).findFirst().map(SkinEnum::getDescription).orElse(<span class="string">""</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;SkinEnum&gt; <span class="title">getList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(values()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="案例地址"><a href="#案例地址" class="headerlink" title="案例地址"></a>案例地址</h2><p>欢迎大家访问我的Github地址，如果喜欢的话，希望能给个Star，<a href="https://github.com/Normcorer/State-Pattern.git" target="_blank" rel="noopener">点击此处获取本案例源码</a>。</p>
+<hr>
+<blockquote>
+<p>博主是97年的，在杭州从事Java，如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F/index.html" rel="tag"># 代码质量</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/p/dbee4e79.html" rel="next" title="模版方法模式见解与案例">
+                <i class="fa fa-chevron-left"></i> 模版方法模式见解与案例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="MolZhao" />
+            
+              <p class="site-author-name" itemprop="name">MolZhao</p>
+              <p class="site-description motion-element" itemprop="description">沉淀</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/index.html%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/normcorer" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:MolZhaovo@163.com" target="_blank" title="Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义与特点"><span class="nav-number">2.</span> <span class="nav-text">定义与特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态模式的结构"><span class="nav-number">3.</span> <span class="nav-text">状态模式的结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单英雄联盟抽皮肤案例"><span class="nav-number">4.</span> <span class="nav-text">简单英雄联盟抽皮肤案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#案例介绍"><span class="nav-number">4.1.</span> <span class="nav-text">案例介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体实现"><span class="nav-number">4.2.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境角色（Context）"><span class="nav-number">4.2.1.</span> <span class="nav-text">环境角色（Context）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象角色（State）"><span class="nav-number">4.2.2.</span> <span class="nav-text">抽象角色（State）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#具体状态（Concrete-State）"><span class="nav-number">4.2.3.</span> <span class="nav-text">具体状态（Concrete State）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#未充值状态"><span class="nav-number">4.2.3.1.</span> <span class="nav-text">未充值状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#已充值状态"><span class="nav-number">4.2.3.2.</span> <span class="nav-text">已充值状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#抽奖状态"><span class="nav-number">4.2.3.3.</span> <span class="nav-text">抽奖状态</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行结果"><span class="nav-number">4.2.4.</span> <span class="nav-text">运行结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例地址"><span class="nav-number">5.</span> <span class="nav-text">案例地址</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">MolZhao</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">ZYJ</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "./public/search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "default";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+      flOptions = {};
+      
+          flOptions.iconStyle = "default";
+      
+          flOptions.boxForm = "horizontal";
+      
+          flOptions.position = "middleRight";
+      
+          flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-float', flOptions);
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.5,"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":150,"position":"right","hOffset":30,"vOffset":20},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":0.6,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
