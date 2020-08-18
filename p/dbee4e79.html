@@ -85,11 +85,14 @@
 <meta property="og:url" content="http://yoursite.com/p/dbee4e79.html">
 <meta property="og:site_name" content="Molzhao">
 <meta property="og:description" content="前言最近一直在看《重构–改善既有的代码设计》这本书，书中第三章的第一小节，在讲解Duplicated Code（重复代码）的时候，阐述了一种引起重复代码的情况。  重复代码的另一种常见情况就是“两个互为兄弟的子类内含有相同的表达式”。要避免这种情况需要对两个类使用Extract Method(110)，然后使用Pull Up Method(332)，将他推入超类内。如果代码只是类似，并非完全相同，">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-12/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
 <meta property="article:published_time" content="2020-08-12T15:23:00.000Z">
-<meta property="article:modified_time" content="2020-08-12T16:03:48.480Z">
+<meta property="article:modified_time" content="2020-08-18T14:20:38.163Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="代码质量">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-12/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png">
 
 
 
@@ -384,7 +387,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  683 字
+                  1.1k 字
                 </span>
               
 
@@ -400,7 +403,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -429,12 +432,31 @@
 <h2 id="定义与特点"><a href="#定义与特点" class="headerlink" title="定义与特点"></a>定义与特点</h2><p><strong>定义：</strong><br>一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。它是一种类行为型模式。本质就是固定算法骨架，让一些步骤延迟加载到子类中。</p>
 <p><strong>优点：</strong><br>1.它将一些公有不变的部分进行封装到超类中进行实现，可变的部分可由子类继承实现，便于扩展。<br>2.提取了公有方法到超类，便于复用。<br>3.部分方法由子类实现，可以通过扩展到方式增加相应的功能，符合开闭原则。</p>
 <p><strong>缺点：</strong><br>1.每个实现都需要定义一个子类，会导致类爆炸，系统更加庞大<br>2.超类中的抽象方法由子类实现，这是一种反向的控制结构，降低了代码的可读性。</p>
+<hr>
 <h2 id="角色与结构"><a href="#角色与结构" class="headerlink" title="角色与结构"></a>角色与结构</h2><h3 id="主要角色"><a href="#主要角色" class="headerlink" title="主要角色"></a>主要角色</h3><p>1.抽象类：负责给一个算法的骨架，它由一个模版方法和若干个基本方法组成。<br>① 模版方法：定义算法骨架，按某种顺序调用其中的方法。<br>② 基本方法：是整个算法一个步骤，包含了(抽象方法，具体方法，钩子方法)。</p>
 <blockquote>
 <p>抽象方法：在抽象类中申明，由具体子类实现。<br>  具体方法：在抽象类中已经实现，在具体子类中可以继承或重写它。<br>  钩子方法：在抽象类中已经实现，包括用于判断的逻辑方法和需要子类重写的空方法两种。</p>
 </blockquote>
 <p>2.具体子类：实现抽象类中所定义的抽象方法和钩子方法，他们是一个顶级逻辑和一个组成步骤。</p>
-<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-12/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F.png" alt="模版方法模式类图"></p>
+<hr>
+<h2 id="学生考试案例"><a href="#学生考试案例" class="headerlink" title="学生考试案例"></a>学生考试案例</h2><h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.template;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Examination</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exam</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        GetTheTestPaper();</span><br><span class="line">        answer();</span><br><span class="line">        FinishTheTestPaper();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetTheTestPaper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"拿到试卷"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">answer</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">FinishTheTestPaper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"完成试卷"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="具体类"><a href="#具体类" class="headerlink" title="具体类"></a>具体类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.template;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentA</span> <span class="keyword">extends</span> <span class="title">Examination</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">answer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"学生A的回答是：ABDC"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj.template;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentB</span> <span class="keyword">extends</span> <span class="title">Examination</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">answer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"学生B的回答是：ADCA"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyj;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.zyj.template.Examination;</span><br><span class="line"><span class="keyword">import</span> com.zyj.template.StudentA;</span><br><span class="line"><span class="keyword">import</span> com.zyj.template.StudentB;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Examination studentA = <span class="keyword">new</span> StudentA();</span><br><span class="line">        Examination studentB = <span class="keyword">new</span> StudentB();</span><br><span class="line"></span><br><span class="line">        studentA.exam();</span><br><span class="line">        studentB.exam();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">拿到试卷</span><br><span class="line">学生A的回答是：ABDC</span><br><span class="line">完成试卷</span><br><span class="line">拿到试卷</span><br><span class="line">学生B的回答是：ADCA</span><br><span class="line">完成试卷</span><br></pre></td></tr></table></figure>
+<p>这里的例子可能举的并不是很好，模版方法模式算是一个比较容易理解的设计模式，该设计模式主要用于定义模版，比如我们写论文的时候，第一步肯定要写开题报告，有一系列的流程，我们可以抽取公有的流程把他定义在模版抽象类中。然后把一些使用者不同的，让使用者自己去实现就好。</p>
+<hr>
+<h2 id="案例地址"><a href="#案例地址" class="headerlink" title="案例地址"></a>案例地址</h2><p>欢迎大家访问我的Github地址，如果喜欢的话，希望能给个Star，<a href="https://github.com/Normcorer/Template-Method.git" target="_blank" rel="noopener">点击此处获取本案例源码</a>。</p>
+<hr>
+<blockquote>
+<p>博主是97年的，在杭州从事Java，如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p>
+</blockquote>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>
+
       
     </div>
     
@@ -643,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义与特点"><span class="nav-number">2.</span> <span class="nav-text">定义与特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#角色与结构"><span class="nav-number">3.</span> <span class="nav-text">角色与结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要角色"><span class="nav-number">3.1.</span> <span class="nav-text">主要角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构"><span class="nav-number">3.2.</span> <span class="nav-text">结构</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义与特点"><span class="nav-number">2.</span> <span class="nav-text">定义与特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#角色与结构"><span class="nav-number">3.</span> <span class="nav-text">角色与结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要角色"><span class="nav-number">3.1.</span> <span class="nav-text">主要角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构"><span class="nav-number">3.2.</span> <span class="nav-text">结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#学生考试案例"><span class="nav-number">4.</span> <span class="nav-text">学生考试案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象类"><span class="nav-number">4.1.</span> <span class="nav-text">抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#具体类"><span class="nav-number">4.2.</span> <span class="nav-text">具体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行结果"><span class="nav-number">4.3.</span> <span class="nav-text">运行结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例地址"><span class="nav-number">5.</span> <span class="nav-text">案例地址</span></a></li></ol></div>
             
 
           </div>
