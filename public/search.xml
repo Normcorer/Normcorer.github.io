@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>策略模式和状态模式的区别</title>
+      <link href="/p/5ff695a4.html"/>
+      <url>/p/5ff695a4.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在学完策略模式和状态模式之后，发现两者的关系类图基本一样，这不惊让人产生疑问，既然两个设计模式命名不同，肯定是有他们的不同之处。下面记录我对这两种设计模式的理解。</p><hr><h2 id="类图结构"><a href="#类图结构" class="headerlink" title="类图结构"></a>类图结构</h2><h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p>该类图是根据我前面<a href="http://www.molzhao.xyz/p/13848b8b.html" target="_blank" rel="noopener">策略模式的文章</a>编写的，可以下载源码方便理解。</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-09-13/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.jpeg" alt="策略模式"></p><h3 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h3><p>状态模式理解可以看我<a href="http://www.molzhao.xyz/p/cae41fc2.html" target="_blank" rel="noopener">状态模式实现简单英雄联盟抽皮肤案例</a><br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-09-13/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F.jpg" alt="状态模式"></p><hr><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p><strong>策略模式：</strong>其思想是针对一组算法，将每一种算法都封装到具有共同接口的独立的类中，从而是它们可以相互替换。策略模式的最大特点是使得算法可以在不影响客户端的情况下发生变化，从而改变不同的功能。</p><p>策略模式的Strategy类为Context定义了一系列的可供重用的算法或行为。在实践过程中，只要在分析过程中需要用到在不同时间应用不同的业务规则，就可以考虑策略模式处理这种变化的可能性。（这边要注意如果每个策略都是new出来的，在高并发的环境下使用会消耗很多内存。需要针对不同业务环境不同使用。）</p><p><strong>状态模式：</strong>允许一个对象在其内部状态改变时改变它的行为。对象看起来似乎修改了它的类。</p><p>状态模式主要解决的是当控制一个对象<code>状态转换</code>的条件<code>表达式</code>过于复杂时的情况。把状态的判断逻辑转移到表示不同状态的一系列类当中，可以把复杂的判断逻辑简化。当一个对象的行为取决于它的状态，并且它必须在<code>运行时刻</code>根据状态改变它的行为时，就可以考虑使用状态模式了。</p><p>在很多情况下，一个对象的行为取决于一个或多个动态变化的属性，这样的属性叫做状态，这样的对象叫做有状态的(stateful)对象，这样的对象状态是从事先定义好的一系列值中取出的。当一个这样的对象与外部事件产生互动时，其内部状态就会改变，从而使得系统的行为也随之发生变化。</p><blockquote><p>策略模式的客户端必须对所有策略类相当了解，明确当前场景下各种策略的利弊，来判断当前场景应该使用哪一种策略。策略类对客户端时暴露的。<br>状态模式依赖于其状态的变化其内部的行为发生变化，将动作委托到代表当前状态的对象，对外表现为类发生了变化。</p></blockquote><hr><blockquote><p>博主是97年的，在杭州从事Java，如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p></blockquote><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 设计模式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 代码质量 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>LeetCode146-LRU缓存机制</title>
       <link href="/p/df7bbfb4.html"/>
       <url>/p/df7bbfb4.html</url>
