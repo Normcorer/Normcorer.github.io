@@ -2528,6 +2528,13 @@ Mock捕获参数的情景我们在被mock的方法调用参数明确的情况下
         guest_info:guest,
         pageSize:'10' || 10,
     });
+
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+  	infoEle.childNodes.forEach(function(item) {
+    	item.parentNode.removeChild(item);
+       });
+    }
   </script>
 
 
