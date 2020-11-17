@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Kafka,消息队列," />
+  <meta name="keywords" content="消息队列,RocketMq," />
 
 
 
@@ -79,22 +79,41 @@
 
 
 
-<meta name="description" content="Kafka Consumer多线程实例  Kafka 0.9版本开始推出了Java版本的consumer，优化了coordinator的设计以及摆脱了对zookeeper的依赖。社区最近也在探讨正式用这套consumer API替换Scala版本的consumer的计划。鉴于目前这方面的资料并不是很多，本文将尝试给出一个利用KafkaConsumer编写的多线程消费者实例，希望对大家有所帮助。 这">
+<meta name="description" content="前言在运用中流程一般 是在程序中使用代码编辑生产者,将所需要的消息发送到rocketmq中，然后另一个程序编辑消费者从rocketmq里面获取消息。rocketmq集群，需要nameServer和Broker集群。 准备两台服务器，两台机器都是master，如果要搞一主N备，修改相应的配置文件 1.ip:192.168.31.144 rocketmq-nameserver1  rocketmq-m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="KafkaConsumer多线程实例">
-<meta property="og:url" content="http://yoursite.com/p/72a88712.html">
+<meta property="og:title" content="RocketMq在CentOS7下部署集群">
+<meta property="og:url" content="http://yoursite.com/p/12096768.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="Kafka Consumer多线程实例  Kafka 0.9版本开始推出了Java版本的consumer，优化了coordinator的设计以及摆脱了对zookeeper的依赖。社区最近也在探讨正式用这套consumer API替换Scala版本的consumer的计划。鉴于目前这方面的资料并不是很多，本文将尝试给出一个利用KafkaConsumer编写的多线程消费者实例，希望对大家有所帮助。 这">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-31/%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%BB%B4%E6%8A%A4%E4%B8%80%E4%B8%AAConsumer.png">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-31/%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%BB%B4%E6%8A%A4%E5%A4%9A%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AAConsumer.png">
+<meta property="og:description" content="前言在运用中流程一般 是在程序中使用代码编辑生产者,将所需要的消息发送到rocketmq中，然后另一个程序编辑消费者从rocketmq里面获取消息。rocketmq集群，需要nameServer和Broker集群。 准备两台服务器，两台机器都是master，如果要搞一主N备，修改相应的配置文件 1.ip:192.168.31.144 rocketmq-nameserver1  rocketmq-m">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource1.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource2.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource3.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource4.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource5.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource6.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource7.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource8.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource9.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource10.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource11.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource12.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource13.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource14.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource15.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource16.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource17.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource18.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource19.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource20.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource21.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
-<meta property="article:published_time" content="2020-08-31T12:21:00.000Z">
-<meta property="article:modified_time" content="2020-09-29T15:04:20.708Z">
+<meta property="article:published_time" content="2020-11-17T02:18:00.000Z">
+<meta property="article:modified_time" content="2020-11-17T02:33:45.288Z">
 <meta property="article:author" content="MolZhao">
-<meta property="article:tag" content="Kafka">
 <meta property="article:tag" content="消息队列">
+<meta property="article:tag" content="RocketMq">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-31/%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%BB%B4%E6%8A%A4%E4%B8%80%E4%B8%AAConsumer.png">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource1.png">
 
 
 
@@ -124,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/p/72a88712.html"/>
+  <link rel="canonical" href="http://yoursite.com/p/12096768.html"/>
 
 
 
 
 
-  <title>KafkaConsumer多线程实例 | Molzhao</title>
+  <title>RocketMq在CentOS7下部署集群 | Molzhao</title>
   
 
 
@@ -301,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/72a88712.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/12096768.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MolZhao">
@@ -318,7 +337,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">KafkaConsumer多线程实例</h1>
+          <h1 class="post-title" itemprop="name headline">RocketMq在CentOS7下部署集群</h1>
         
 
         <div class="post-meta">
@@ -330,8 +349,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-31T20:21:00+08:00">
-                2020-08-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-17T10:18:00+08:00">
+                2020-11-17
               </time>
             
 
@@ -371,8 +390,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/p/72a88712.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/p/72a88712.html" itemprop="commentCount"></span>
+                <a href="/p/12096768.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/p/12096768.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -399,7 +418,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.5k 字
+                  1.9k 字
                 </span>
               
 
@@ -415,7 +434,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -436,47 +455,95 @@
       
 
       
-        <h2 id="Kafka-Consumer多线程实例"><a href="#Kafka-Consumer多线程实例" class="headerlink" title="Kafka Consumer多线程实例"></a>Kafka Consumer多线程实例</h2><p>  Kafka 0.9版本开始推出了Java版本的consumer，优化了coordinator的设计以及摆脱了对zookeeper的依赖。社区最近也在探讨正式用这套consumer API替换Scala版本的consumer的计划。鉴于目前这方面的资料并不是很多，本文将尝试给出一个利用KafkaConsumer编写的多线程消费者实例，希望对大家有所帮助。</p>
-<p>这套API最重要的入口就KafkaConsumer(o.a.k.clients.consumer.KafkaConsumer)，普通的单线程使用方法官网API已有介绍，这里不再赘述了。因此，我们直奔主题——讨论一下如何创建多线程的方式来使用KafkaConsumer。KafkaConsumer和KafkaProducer不同，后者是线程安全的，因此我们鼓励用户在多个线程中共享一个KafkaProducer实例，这样通常都要比每个线程维护一个KafkaProducer实例效率要高。但对于KafkaConsumer而言，它不是线程安全的。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在运用中流程一般 是在程序中使用代码编辑生产者,将所需要的消息发送到rocketmq中，然后另一个程序编辑消费者从rocketmq里面获取消息。rocketmq集群，需要nameServer和Broker集群。</p>
+<p>准备两台服务器，两台机器都是master，如果要搞一主N备，修改相应的配置文件</p>
+<p>1.ip:192.168.31.144 rocketmq-nameserver1  rocketmq-master1</p>
+<p>2.ip:192.168.31.165 rocketmq-nameserver2  rocketmq-master2</p>
 <hr>
-<h2 id="实现多线程时通常由两种实现方法"><a href="#实现多线程时通常由两种实现方法" class="headerlink" title="实现多线程时通常由两种实现方法"></a>实现多线程时通常由两种实现方法</h2><p>1.每个线程维护一个KafkaConsumer</p>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-31/%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%BB%B4%E6%8A%A4%E4%B8%80%E4%B8%AAConsumer.png" alt="每个线程维护一个KafkaConsumer"></p>
-<p>2.维护一个或多个KafkaConsumer，同时维护多个事件处理线程(worker thread)</p>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-31/%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%BB%B4%E6%8A%A4%E5%A4%9A%E4%B8%AA%E6%88%96%E4%B8%80%E4%B8%AAConsumer.png" alt="维护一个或多个KafkaConsumer"><br>当然，这种方法还可以有多个变种：比如每个worker线程有自己的处理队列。consumer根据某种规则或逻辑将消息放入不同的队列。不过总体思想还是相同的，故这里不做过多展开讨论了。</p>
-<p>3.两种方式的优缺点</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>优点</th>
-<th>缺点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>方法1(每个线程维护一个KafkaConsumer)</td>
-<td>方便实现速度较快，因为不需要任何线程间交互。<br>易于维护分区内的消息顺序。</td>
-<td>更多的TCP连接开销(每个线程都要维护若干个TCP连接)。<br>consumer数受限于topic分区数，扩展性差。<br>频繁请求导致吞吐量下降。<br>线程自己处理消费到的消息可能会导致超时，从而造成rebalance。</td>
-</tr>
-<tr>
-<td>方法2 (单个(或多个)consumer，多个worker线程)</td>
-<td>可独立扩展consumer数和worker数，伸缩性好</td>
-<td>实现麻烦。<br>通常难于维护分区内的消息顺序。<br>处理链路变长，导致难以保证提交位移的语义正确性。</td>
-</tr>
-</tbody></table>
-<p>下面我们分别实现这两种方法。需要指出的是，下面的代码都是最基本的实现，并没有考虑很多编程细节，比如如何处理错误等。</p>
-<h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><p><strong><em>ConsumerRunnable类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 每个线程维护私有的KafkaConsumer实例</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> KafkaConsumer&lt;String, String&gt; consumer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsumerRunnable</span><span class="params">(String brokerList, String groupId, String topic)</span> </span>&#123;</span><br><span class="line">        Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">        props.put(<span class="string">"bootstrap.servers"</span>, brokerList);</span><br><span class="line">        props.put(<span class="string">"group.id"</span>, groupId);</span><br><span class="line">        props.put(<span class="string">"enable.auto.commit"</span>, <span class="string">"true"</span>);        <span class="comment">//本例使用自动提交位移</span></span><br><span class="line">        props.put(<span class="string">"auto.commit.interval.ms"</span>, <span class="string">"1000"</span>);</span><br><span class="line">        props.put(<span class="string">"session.timeout.ms"</span>, <span class="string">"30000"</span>);</span><br><span class="line">        props.put(<span class="string">"key.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        props.put(<span class="string">"value.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        <span class="keyword">this</span>.consumer = <span class="keyword">new</span> KafkaConsumer&lt;&gt;(props);</span><br><span class="line">        consumer.subscribe(Arrays.asList(topic));   <span class="comment">// 本例使用分区副本自动分配策略</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">200</span>);   <span class="comment">// 本例使用200ms作为获取超时时间</span></span><br><span class="line">            <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">                <span class="comment">// 这里面写处理消息的逻辑，本例中只是简单地打印消息</span></span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">" consumed "</span> + record.partition() +</span><br><span class="line">                        <span class="string">"th message with offset: "</span> + record.offset());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>ConsumerGroup类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.my.kafka.test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerGroup</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;ConsumerRunnable&gt; consumers;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsumerGroup</span><span class="params">(<span class="keyword">int</span> consumerNum, String groupId, String topic, String brokerList)</span> </span>&#123;</span><br><span class="line">        consumers = <span class="keyword">new</span> ArrayList&lt;&gt;(consumerNum);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; consumerNum; ++i) &#123;</span><br><span class="line">            ConsumerRunnable consumerThread = <span class="keyword">new</span> ConsumerRunnable(brokerList, groupId, topic);</span><br><span class="line">            consumers.add(consumerThread);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRunnable task : consumers) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(task).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>ConsumerMain类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerMain</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String brokerList = <span class="string">"localhost:9092"</span>;</span><br><span class="line">        String groupId = <span class="string">"testGroup1"</span>;</span><br><span class="line">        String topic = <span class="string">"test-topic"</span>;</span><br><span class="line">        <span class="keyword">int</span> consumerNum = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">        ConsumerGroup consumerGroup = <span class="keyword">new</span> ConsumerGroup(consumerNum, groupId, topic, brokerList);</span><br><span class="line">        consumerGroup.execute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><p><strong><em>Worker类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ConsumerRecord&lt;String, String&gt; consumerRecord;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Worker</span><span class="params">(ConsumerRecord record)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.consumerRecord = record;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里写你的消息处理逻辑，本例中只是简单地打印消息</span></span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">" consumed "</span> + consumerRecord.partition()</span><br><span class="line">            + <span class="string">"th message with offset: "</span> + consumerRecord.offset());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>ConsumerHandler类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecord;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.ConsumerRecords;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.consumer.KafkaConsumer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 本例中使用一个consumer将消息放入后端队列，你当然可以使用前一种方法中的多实例按照某张规则同时把消息放入后端队列</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> KafkaConsumer&lt;String, String&gt; consumer;</span><br><span class="line">    <span class="keyword">private</span> ExecutorService executors;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConsumerHandler</span><span class="params">(String brokerList, String groupId, String topic)</span> </span>&#123;</span><br><span class="line">        Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">        props.put(<span class="string">"bootstrap.servers"</span>, brokerList);</span><br><span class="line">        props.put(<span class="string">"group.id"</span>, groupId);</span><br><span class="line">        props.put(<span class="string">"enable.auto.commit"</span>, <span class="string">"true"</span>);</span><br><span class="line">        props.put(<span class="string">"auto.commit.interval.ms"</span>, <span class="string">"1000"</span>);</span><br><span class="line">        props.put(<span class="string">"session.timeout.ms"</span>, <span class="string">"30000"</span>);</span><br><span class="line">        props.put(<span class="string">"key.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        props.put(<span class="string">"value.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        consumer = <span class="keyword">new</span> KafkaConsumer&lt;&gt;(props);</span><br><span class="line">        consumer.subscribe(Arrays.asList(topic));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(<span class="keyword">int</span> workerNum)</span> </span>&#123;</span><br><span class="line">        executors = <span class="keyword">new</span> ThreadPoolExecutor(workerNum, workerNum, <span class="number">0L</span>, TimeUnit.MILLISECONDS,</span><br><span class="line">                <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">1000</span>), <span class="keyword">new</span> ThreadPoolExecutor.CallerRunsPolicy());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">200</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">final</span> ConsumerRecord record : records) &#123;</span><br><span class="line">                executors.submit(<span class="keyword">new</span> Worker(record));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">shutdown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (consumer != <span class="keyword">null</span>) &#123;</span><br><span class="line">            consumer.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (executors != <span class="keyword">null</span>) &#123;</span><br><span class="line">            executors.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!executors.awaitTermination(<span class="number">10</span>, TimeUnit.SECONDS)) &#123;</span><br><span class="line">                System.out.println(<span class="string">"Timeout.... Ignore for this case"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException ignored) &#123;</span><br><span class="line">            System.out.println(<span class="string">"Other thread interrupted this shutdown, ignore for this case."</span>);</span><br><span class="line">            Thread.currentThread().interrupt();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><em>Main类</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String brokerList = <span class="string">"localhost:9092,localhost:9093,localhost:9094"</span>;</span><br><span class="line">        String groupId = <span class="string">"group2"</span>;</span><br><span class="line">        String topic = <span class="string">"test-topic"</span>;</span><br><span class="line">        <span class="keyword">int</span> workerNum = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">        ConsumerHandler consumers = <span class="keyword">new</span> ConsumerHandler(brokerList, groupId, topic);</span><br><span class="line">        consumers.execute(workerNum);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException ignored) &#123;&#125;</span><br><span class="line">        consumers.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>总结一下，这两种方法或是模型都有各自的优缺点，在具体使用时需要根据自己实际的业务特点来选取对应的方法。就我个人而言，我比较推崇第二种方法以及背后的思想，即不要将很重的处理逻辑放入消费者的代码中，很多Kafka consumer使用者碰到的各种rebalance超时、coordinator重新选举、心跳无法维持等问题都来源于此。</p>
+<h2 id="安装JDK环境"><a href="#安装JDK环境" class="headerlink" title="安装JDK环境"></a>安装JDK环境</h2><p><a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="noopener">点击此处下载JDK</a></p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource1.png" alt="reouces1"></p>
+<p>1.上传该文件到：<code>/usr/local</code></p>
+<p>2.解压 <code>tar -zxvf jdk-7u80-linux-x64.tar.gz</code></p>
+<p>3.修改配置文件</p>
+<p>4.<code>vi /etc/profile</code></p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource2.png" alt="reouces2"></p>
+<p>在末尾添加配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.7.0_80</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>刷新配置文件：</p>
+<p><code>source /etc/profile</code>（该命令可以让 当前的配置文件立刻生效。不需要在重启服务器）</p>
+<p>5.测试jdk安装是否成功： java -version</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br><span class="line">java version <span class="string">"1.8.0_131"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_131-b11)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>如上所示：表示成功。</p>
+<hr>
+<h2 id="配置RocketMQ集群"><a href="#配置RocketMQ集群" class="headerlink" title="配置RocketMQ集群"></a>配置RocketMQ集群</h2><p>1.<a href="http://rocketmq.apache.org/dowloading/releases/" target="_blank" rel="noopener">点击此处下载mq</a></p>
+<p>2.上传下载包到 <code>/usr/local</code></p>
+<p>3.解压文件 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上传alibaba-rocketmq-3.2.6.tar.gz文件至/usr/local</span></span><br><span class="line"><span class="comment"># tar -zxvf alibaba-rocketmq-3.2.6.tar.gz -C /usr/local</span></span><br><span class="line"><span class="comment"># mv alibaba-rocketmq alibaba-rocketmq-3.2.6</span></span><br><span class="line"><span class="comment"># ln -s alibaba-rocketmq-3.2.6 rocketmq</span></span><br></pre></td></tr></table></figure>
+<p>4.创建存储路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/<span class="built_in">local</span>/rocketmq/store</span><br><span class="line"><span class="comment"># mkdir /usr/local/rocketmq/store/commitlog</span></span><br><span class="line"><span class="comment"># mkdir /usr/local/rocketmq/store/consumequeue</span></span><br><span class="line"><span class="comment"># mkdir /usr/local/rocketmq/store/index</span></span><br></pre></td></tr></table></figure>
+<p>5.修改rocketmq的核心配置文件：</p>
+<p><strong>broker-a.properties文件配置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#所属集群名字</span></span><br><span class="line">brokerClusterName=rocketmq-cluster</span><br><span class="line"><span class="comment">#broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line">brokerName=broker<span class="_">-a</span></span><br><span class="line"><span class="comment">#0 表示 Master，&gt;0 表示 Slave</span></span><br><span class="line">brokerId=0</span><br><span class="line"><span class="comment">#nameServer地址，分号分割</span></span><br><span class="line">namesrvAddr=rocketmq-nameserver1:9876;rocketmq-nameserver2:9876</span><br><span class="line"><span class="comment">#在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="comment">#是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=<span class="literal">true</span></span><br><span class="line"><span class="comment">#是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=<span class="literal">true</span></span><br><span class="line"><span class="comment">#Broker 对外服务的监听端口</span></span><br><span class="line">listenPort=10911</span><br><span class="line"><span class="comment">#删除文件时间点，默认凌晨 4点</span></span><br><span class="line">deleteWhen=04</span><br><span class="line"><span class="comment">#文件保留时间，默认 48 小时</span></span><br><span class="line">fileReservedTime=120</span><br><span class="line"><span class="comment">#commitLog每个文件的大小默认1G</span></span><br><span class="line">mapedFileSizeCommitLog=1073741824</span><br><span class="line"><span class="comment">#ConsumeQueue每个文件默认存30W条，根据业务情况调整</span></span><br><span class="line">mapedFileSizeConsumeQueue=300000</span><br><span class="line"><span class="comment">#destroyMapedFileIntervalForcibly=120000</span></span><br><span class="line"><span class="comment">#redeleteHangedFileInterval=120000</span></span><br><span class="line"><span class="comment">#检测物理文件磁盘空间</span></span><br><span class="line">diskMaxUsedSpaceRatio=88</span><br><span class="line"><span class="comment">#存储路径</span></span><br><span class="line">storePathRootDir=/usr/<span class="built_in">local</span>/rocketmq/store</span><br><span class="line"><span class="comment">#commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=/usr/<span class="built_in">local</span>/rocketmq/store/commitlog</span><br><span class="line"><span class="comment">#消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=/usr/<span class="built_in">local</span>/rocketmq/store/consumequeue</span><br><span class="line"><span class="comment">#消息索引存储路径</span></span><br><span class="line">storePathIndex=/usr/<span class="built_in">local</span>/rocketmq/store/index</span><br><span class="line"><span class="comment">#checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=/usr/<span class="built_in">local</span>/rocketmq/store/checkpoint</span><br><span class="line"><span class="comment">#abort 文件存储路径</span></span><br><span class="line">abortFile=/usr/<span class="built_in">local</span>/rocketmq/store/abort</span><br><span class="line"><span class="comment">#限制的消息大小</span></span><br><span class="line">maxMessageSize=65536</span><br><span class="line"><span class="comment">#flushCommitLogLeastPages=4</span></span><br><span class="line"><span class="comment">#flushConsumeQueueLeastPages=2</span></span><br><span class="line"><span class="comment">#flushCommitLogThoroughInterval=10000</span></span><br><span class="line"><span class="comment">#flushConsumeQueueThoroughInterval=60000</span></span><br><span class="line"><span class="comment">#Broker 的角色</span></span><br><span class="line"><span class="comment">#- ASYNC_MASTER 异步复制Master</span></span><br><span class="line"><span class="comment">#- SYNC_MASTER 同步双写Master</span></span><br><span class="line"><span class="comment">#- SLAVE</span></span><br><span class="line">brokerRole=ASYNC_MASTER</span><br><span class="line"><span class="comment">#刷盘方式</span></span><br><span class="line"><span class="comment">#- ASYNC_FLUSH 异步刷盘</span></span><br><span class="line"><span class="comment">#- SYNC_FLUSH 同步刷盘</span></span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"><span class="comment">#checkTransactionMessageEnable=false</span></span><br><span class="line"><span class="comment">#发消息线程池数量</span></span><br><span class="line"><span class="comment">#sendMessageThreadPoolNums=128</span></span><br><span class="line"><span class="comment">#拉消息线程池数量</span></span><br><span class="line"><span class="comment">#pullMessageThreadPoolNums=128</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>broker-b.properties文件配置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#所属集群名字</span></span><br><span class="line">brokerClusterName=rocketmq-cluster</span><br><span class="line"><span class="comment">#broker名字，注意此处不同的配置文件填写的不一样</span></span><br><span class="line">brokerName=broker-b</span><br><span class="line"><span class="comment">#0 表示 Master，&gt;0 表示 Slave</span></span><br><span class="line">brokerId=0</span><br><span class="line"><span class="comment">#nameServer地址，分号分割</span></span><br><span class="line">namesrvAddr=rocketmq-nameserver1:9876;rocketmq-nameserver2:9876</span><br><span class="line"><span class="comment">#在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</span></span><br><span class="line">defaultTopicQueueNums=4</span><br><span class="line"><span class="comment">#是否允许 Broker 自动创建Topic，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateTopicEnable=<span class="literal">true</span></span><br><span class="line"><span class="comment">#是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭</span></span><br><span class="line">autoCreateSubscriptionGroup=<span class="literal">true</span></span><br><span class="line"><span class="comment">#Broker 对外服务的监听端口</span></span><br><span class="line">listenPort=10911</span><br><span class="line"><span class="comment">#删除文件时间点，默认凌晨 4点</span></span><br><span class="line">deleteWhen=04</span><br><span class="line"><span class="comment">#文件保留时间，默认 48 小时</span></span><br><span class="line">fileReservedTime=120</span><br><span class="line"><span class="comment">#commitLog每个文件的大小默认1G</span></span><br><span class="line">mapedFileSizeCommitLog=1073741824</span><br><span class="line"><span class="comment">#ConsumeQueue每个文件默认存30W条，根据业务情况调整</span></span><br><span class="line">mapedFileSizeConsumeQueue=300000</span><br><span class="line"><span class="comment">#destroyMapedFileIntervalForcibly=120000</span></span><br><span class="line"><span class="comment">#redeleteHangedFileInterval=120000</span></span><br><span class="line"><span class="comment">#检测物理文件磁盘空间</span></span><br><span class="line">diskMaxUsedSpaceRatio=88</span><br><span class="line"><span class="comment">#存储路径</span></span><br><span class="line">storePathRootDir=/usr/<span class="built_in">local</span>/rocketmq/store</span><br><span class="line"><span class="comment">#commitLog 存储路径</span></span><br><span class="line">storePathCommitLog=/usr/<span class="built_in">local</span>/rocketmq/store/commitlog</span><br><span class="line"><span class="comment">#消费队列存储路径存储路径</span></span><br><span class="line">storePathConsumeQueue=/usr/<span class="built_in">local</span>/rocketmq/store/consumequeue</span><br><span class="line"><span class="comment">#消息索引存储路径</span></span><br><span class="line">storePathIndex=/usr/<span class="built_in">local</span>/rocketmq/store/index</span><br><span class="line"><span class="comment">#checkpoint 文件存储路径</span></span><br><span class="line">storeCheckpoint=/usr/<span class="built_in">local</span>/rocketmq/store/checkpoint</span><br><span class="line"><span class="comment">#abort 文件存储路径</span></span><br><span class="line">abortFile=/usr/<span class="built_in">local</span>/rocketmq/store/abort</span><br><span class="line"><span class="comment">#限制的消息大小</span></span><br><span class="line">maxMessageSize=65536</span><br><span class="line"><span class="comment">#flushCommitLogLeastPages=4</span></span><br><span class="line"><span class="comment">#flushConsumeQueueLeastPages=2</span></span><br><span class="line"><span class="comment">#flushCommitLogThoroughInterval=10000</span></span><br><span class="line"><span class="comment">#flushConsumeQueueThoroughInterval=60000</span></span><br><span class="line"><span class="comment">#Broker 的角色</span></span><br><span class="line"><span class="comment">#- ASYNC_MASTER 异步复制Master</span></span><br><span class="line"><span class="comment">#- SYNC_MASTER 同步双写Master</span></span><br><span class="line"><span class="comment">#- SLAVE</span></span><br><span class="line">brokerRole=ASYNC_MASTER</span><br><span class="line"><span class="comment">#刷盘方式</span></span><br><span class="line"><span class="comment">#- ASYNC_FLUSH 异步刷盘</span></span><br><span class="line"><span class="comment">#- SYNC_FLUSH 同步刷盘</span></span><br><span class="line">flushDiskType=ASYNC_FLUSH</span><br><span class="line"><span class="comment">#checkTransactionMessageEnable=false</span></span><br><span class="line"><span class="comment">#发消息线程池数量</span></span><br><span class="line"><span class="comment">#sendMessageThreadPoolNums=128</span></span><br><span class="line"><span class="comment">#拉消息线程池数量</span></span><br><span class="line"><span class="comment">#pullMessageThreadPoolNums=128</span></span><br></pre></td></tr></table></figure>
+
+<p>6.在本地host文件中 添加域名解析</p>
+<p>配置文件中：<code>namesrvAddr=rocketmq-nameserver1:9876;rocketmq-nameserver2:9876</code> 此地址需要域名解析:</p>
+<p>1.打开 <code>hosts</code> 文件 <code>vi /etc/hosts</code></p>
+<p>2.添加对应的域名解析：<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource3.png" alt="reouces3"></p>
+<p>至于划横线的地方，有的机器如果不添加 则可能在启动NameServer的时候会报错 提示没有主机名关联的地址。</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource4.png" alt="reouces4"></p>
+<p>可以通过<code>hostname</code>命令，查看主机名字</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource5.png" alt="reouces5"></p>
+<p>修改完配置以后 则需要刷新网卡：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+<p>如果是虚拟机克隆出来的服务器,刷新网卡的时候 如果报错，则可以查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-xxx 文件（每台机器名字可能不一样）</span><br></pre></td></tr></table></figure>
+
+<p>修改HWADDR的mac地址</p>
+<p>mac地址可以两种方式查看：<br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource6.png" alt="reouces6"></p>
+<p>或者</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource7.png" alt="reouces7"></p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource8.png" alt="reouces8"></p>
+<p>有的机器没有HWADDR 这个配置名字，如果没有则添加上去。修改完配置以后 重新刷新网卡 <code>service network restart</code>，如果刷新还报错。可以尝试重新启动。</p>
+<p>可以通过ping的方式 检测 hosts文件是否配置成功：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource9.png" alt="reouces9"></p>
+<p>以上上传和解压，修改本地hosts文件，刷新网卡，关闭防火墙等操作两台服务器都应该进行相应的操作，所有的操作完成了，则接下来就是启动rocketmq</p>
+<hr>
+<h2 id="关于NameServer和brok的启动"><a href="#关于NameServer和brok的启动" class="headerlink" title="关于NameServer和brok的启动"></a>关于NameServer和brok的启动</h2><p>1.进入  <code>cd /usr/local/rocketmq/bin</code> </p>
+<p>2.<code>nohup sh mqnamesrv &amp;</code> 后台启动nameServer 然后通过jps命令查看当前是否正常启动。</p>
+<p>ps：第一次操作的时候，总是会在这里出错，启动的时候 提示：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource10.png" alt="reouces10"></p>
+<p>网上查了一大堆原因，也不知道是怎么回事，可以换 <code>sh mqnamesrv</code> 这种方式启动，如果有报错 则会打印报错日志，如果启动的时候如图所示：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource11.png" alt="reouces11"></p>
+<p>表示正常启动成功，当然这是前端启动方式，ctrl+c 就自然退出了，需要切换成后台启动形式：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource12.png" alt="reouces12"></p>
+<p>所以启动这里，你可以先后台启动,然后通过 <code>jps</code> 查看 是否启动成功，如果没有启动成功则前台方式启动，看看打印的错误日志。例如：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource13.png" alt="reouces13"></p>
+<p>成功启动以后 则能看到：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource14.png" alt="reouces14"></p>
+<p>如果启动的时候因为内存分配原因 导致无法启动成功，则需要修改配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/<span class="built_in">local</span>/rocketmq/bin/runbroker.sh</span><br></pre></td></tr></table></figure>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource15.png" alt="reouces15"></p>
+<p>2.启动brokerServer</p>
+<p>1.<code>cd /usr/local/rocketmq/bin</code></p>
+<p>2.<code>nohup sh mqbroker -c /usr/local/rocketmq/conf/2m-noslave/broker-a.properties &gt;/dev/null 2&gt;&amp;1 &amp;</code> （如果是另一台机器，则启动时候需要用到是 broker -b.properties文件）如图：</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource16.png" alt="reouces16"></p>
+<p>两台机器都完成了上面的步骤，可以搭建一个rocketmq的后端管理系统</p>
+<p>1.下载 tomcat（可以将tomcat放在两台服务器中的任何一台都可以了 tomcat 不需要集群）</p>
+<p>2.下载rocketmq的后端管理平台所需要的war包</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource17.png" alt="reouces17"></p>
+<p>3.将war包放到<code>tomcat/webapps</code>目录（启动或者重启tomcat的时候自动解压war包了）</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource18.png" alt="reouces18"></p>
+<p>4.修改位于：<code>/usr/local/apache-tomcat-7.0.65/webapps/rocketmq-web-console/WEB-INF/classes</code>下的<code>config.properties</code>文件将集群的ip地址配置进去。</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource19.png" alt="reouces19"></p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource20.png" alt="reouces20"></p>
+<p>5.启动tomcat 输入请求地址栏：</p>
+<p><a href="http://192.168.31.197:8080/rocketmq-web-console/cluster/list.do" target="_blank" rel="noopener">http://192.168.31.197:8080/rocketmq-web-console/cluster/list.do</a></p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-11-17/resource21.png" alt="reouces21"></p>
 <hr>
 <blockquote>
 <p>如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p>
@@ -499,9 +566,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Kafka/index.html" rel="tag"># Kafka</a>
-          
             <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/index.html" rel="tag"># 消息队列</a>
+          
+            <a href="/tags/RocketMq/index.html" rel="tag"># RocketMq</a>
           
         </div>
       
@@ -529,8 +596,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/p/969d9481.html" rel="next" title="CAS问题结合AtomicInteger分析">
-                <i class="fa fa-chevron-left"></i> CAS问题结合AtomicInteger分析
+              <a href="/p/86b3e3e1.html" rel="next" title="Oracle常见死锁发生的原因及解决方法">
+                <i class="fa fa-chevron-left"></i> Oracle常见死锁发生的原因及解决方法
               </a>
             
           </div>
@@ -538,10 +605,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/p/df7bbfb4.html" rel="prev" title="LeetCode146-LRU缓存机制">
-                LeetCode146-LRU缓存机制 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -696,7 +759,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka-Consumer多线程实例"><span class="nav-number">1.</span> <span class="nav-text">Kafka Consumer多线程实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现多线程时通常由两种实现方法"><span class="nav-number">2.</span> <span class="nav-text">实现多线程时通常由两种实现方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法1"><span class="nav-number">2.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法2"><span class="nav-number">2.2.</span> <span class="nav-text">方法2</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装JDK环境"><span class="nav-number">2.</span> <span class="nav-text">安装JDK环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置RocketMQ集群"><span class="nav-number">3.</span> <span class="nav-text">配置RocketMQ集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于NameServer和brok的启动"><span class="nav-number">4.</span> <span class="nav-text">关于NameServer和brok的启动</span></a></li></ol></div>
             
 
           </div>
