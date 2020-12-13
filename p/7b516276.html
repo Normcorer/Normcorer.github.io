@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="hexo," />
+  <meta name="keywords" content="代码质量," />
 
 
 
@@ -79,19 +79,20 @@
 
 
 
-<meta name="description" content="前言12在建立这个博客的时候，我一直考虑在哪里托管静态页面如下是我几次托管的经历，站在自身的角度，判断他们的特点。 GitHub Page 优点：建站很快，无需自己搭建服务器，基于GIT方便版本控制，免费300M存储空间，绑定域名容易，直接解析CNAME指向即可，重点他免费！！  缺点：访问速度奇慢无比   Ali OSS 优点：托管方便，访问速度快，在阿里云强大的数据系统下，可以监测网站各项数据">
+<meta name="description" content="前言迭代器模式其实在我们平时开发中，经常会用到，但是我们并不会自己去写一个迭代器，通常是调用java自带的迭代器，只有在自己想要设计一种新的数据结构的时候，可能会创建对应的迭代器，即便如此，我们也要了解迭代器是怎么实现的，它解决了什么问题，好奇心驱使我去学习了一下。 解决的问题：为了解决在平时开发中，经常要访问一个聚合对象中的各个元素，如“数据结构”中的链表遍历，通常的做法是将链表的创建和遍历都放">
 <meta property="og:type" content="article">
-<meta property="og:title" content="建站历程">
-<meta property="og:url" content="http://yoursite.com/p/39507609.html">
+<meta property="og:title" content="迭代器模式的见解与案例">
+<meta property="og:url" content="http://yoursite.com/p/7b516276.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="前言12在建立这个博客的时候，我一直考虑在哪里托管静态页面如下是我几次托管的经历，站在自身的角度，判断他们的特点。 GitHub Page 优点：建站很快，无需自己搭建服务器，基于GIT方便版本控制，免费300M存储空间，绑定域名容易，直接解析CNAME指向即可，重点他免费！！  缺点：访问速度奇慢无比   Ali OSS 优点：托管方便，访问速度快，在阿里云强大的数据系统下，可以监测网站各项数据">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-06/ossfee.png">
-<meta property="article:published_time" content="2020-06-05T15:50:00.000Z">
-<meta property="article:modified_time" content="2020-06-05T17:21:48.455Z">
+<meta property="og:description" content="前言迭代器模式其实在我们平时开发中，经常会用到，但是我们并不会自己去写一个迭代器，通常是调用java自带的迭代器，只有在自己想要设计一种新的数据结构的时候，可能会创建对应的迭代器，即便如此，我们也要了解迭代器是怎么实现的，它解决了什么问题，好奇心驱使我去学习了一下。 解决的问题：为了解决在平时开发中，经常要访问一个聚合对象中的各个元素，如“数据结构”中的链表遍历，通常的做法是将链表的创建和遍历都放">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-12-13/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
+<meta property="article:published_time" content="2020-12-11T12:32:00.000Z">
+<meta property="article:modified_time" content="2020-12-13T15:43:36.797Z">
 <meta property="article:author" content="MolZhao">
-<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="代码质量">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-06/ossfee.png">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-12-13/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F.png">
 
 
 
@@ -121,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/p/39507609.html"/>
+  <link rel="canonical" href="http://yoursite.com/p/7b516276.html"/>
 
 
 
 
 
-  <title>建站历程 | Molzhao</title>
+  <title>迭代器模式的见解与案例 | Molzhao</title>
   
 
 
@@ -298,7 +299,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/39507609.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/7b516276.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MolZhao">
@@ -315,7 +316,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">建站历程</h1>
+          <h1 class="post-title" itemprop="name headline">迭代器模式的见解与案例</h1>
         
 
         <div class="post-meta">
@@ -327,8 +328,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T23:50:00+08:00">
-                2020-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-11T20:32:00+08:00">
+                2020-12-11
               </time>
             
 
@@ -350,8 +351,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/index.html" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -368,8 +369,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/p/39507609.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/p/39507609.html" itemprop="commentCount"></span>
+                <a href="/p/7b516276.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/p/7b516276.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -396,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  360 字
+                  1.1k 字
                 </span>
               
 
@@ -412,7 +413,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -433,24 +434,50 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在建立这个博客的时候，我一直考虑在哪里托管静态页面</span><br><span class="line">如下是我几次托管的经历，站在自身的角度，判断他们的特点。</span><br></pre></td></tr></table></figure>
-<h3 id="GitHub-Page"><a href="#GitHub-Page" class="headerlink" title="GitHub Page"></a>GitHub Page</h3><ol>
-<li><p>优点：建站很快，无需自己搭建服务器，基于GIT方便版本控制，免费300M存储空间，绑定域名容易，直接解析CNAME指向即可，重点他<strong>免费！！</strong></p>
-</li>
-<li><p>缺点：访问速度奇慢无比</p>
-</li>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>迭代器模式其实在我们平时开发中，经常会用到，但是我们并不会自己去写一个迭代器，通常是调用java自带的迭代器，只有在自己想要设计一种新的数据结构的时候，可能会创建对应的迭代器，即便如此，我们也要了解迭代器是怎么实现的，它解决了什么问题，好奇心驱使我去学习了一下。</p>
+<p><strong>解决的问题：</strong><br>为了解决在平时开发中，经常要访问一个聚合对象中的各个元素，如“数据结构”中的链表遍历，通常的做法是将链表的创建和遍历都放在同一个类中，但这种方式不利于程序的扩展，如果要更换遍历方法就必须修改程序源代码，这违背了 “开闭原则”的问题。</p>
+<hr>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>提供一个对象来顺序访问聚合对象中的一系列数据，而不暴露聚合对象的内部表示。迭代器模式是一种对象行为型模式</p>
+<hr>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p><strong>迭代器模式主要包含以下角色：</strong></p>
+<ol>
+<li>抽象聚合（Aggregate）角色：定义存储、添加、删除聚合对象以及创建迭代器对象的接口。</li>
+<li>具体聚合（ConcreteAggregate）角色：实现抽象聚合类，返回一个具体迭代器的实例。</li>
+<li>抽象迭代器（Iterator）角色：定义访问和遍历聚合元素的接口，通常包含 hasNext()、first()、next() 等方法。</li>
+<li>具体迭代器（Concretelterator）角色：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置。</li>
 </ol>
-<h3 id="Ali-OSS"><a href="#Ali-OSS" class="headerlink" title="Ali OSS"></a>Ali OSS</h3><ol>
-<li><p>优点：托管方便，访问速度快，在阿里云强大的数据系统下，可以监测网站各项数据，对于阿里云OSS各项优点一一不再赘述，了解过对象存储的同学应该都知道，对于没了解的同学可以<a href="https://www.alibabacloud.com/help/zh/doc-detail/31818.htm?spm=a2c63.p38356.b99.5.1a3e4c208lSNMv" target="_blank" rel="noopener">点此了解</a>。</p>
-</li>
-<li><p>缺点：流量不可控，除了贵没啥好说的，另外部署静态页面比较麻烦，hexo生成的静态博客很多都是以文件夹形式的，然后默认省略了index.html。而对于阿里云的OSS来说，并不会默认访问文件夹下的index.html，所以，生成的时候需要对源码进行调整，<a href="https://zengwu.com.cn/p/dd7e8a7b.html" target="_blank" rel="noopener">具体步骤</a>。因此最后放弃了OSS部署，先把OSS作为图床。</p>
-</li>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-12-13/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F.png" alt="迭代器模式结构图"></p>
+<hr>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p><strong>优点：</strong></p>
+<ol>
+<li>访问一个聚合对象的内容而无须暴露它的内部表示。</li>
+<li>遍历任务交由迭代器完成，这简化了聚合类。</li>
+<li>它支持以不同方式遍历一个聚合，甚至可以自定义迭代器的子类以支持新的遍历。</li>
+<li>增加新的聚合类和迭代器类都很方便，无须修改原有代码。</li>
+<li>封装性良好，为遍历不同的聚合结构提供一个统一的接口。</li>
 </ol>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-06/ossfee.png" alt="OSS计费"></p>
-<h3 id="Ali-ECS"><a href="#Ali-ECS" class="headerlink" title="Ali ECS"></a>Ali ECS</h3><ol>
-<li>优点：方便管理，容易迁移，访问速度快</li>
-<li>缺点：Nginx有时候会宕机，不过设置了开机自启动和阿里云进程报警，也还能接受。</li>
+<p><strong>缺点：</strong></p>
+<ol>
+<li>增加了类的个数，一定程度上增加了程序的复杂度</li>
 </ol>
+<hr>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽象聚合接口，新增聚合类实现该接口：定义存储、添加、删除聚合对象以及创建迭代器对象的接口。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(Object o)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object o)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Iterator <span class="title">getIterator</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao.standard;</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> xyz.molzhao.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.Aggregate;</span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.Iterator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 具体聚合实现类：实现抽象聚合类，返回一个具体迭代器的实例。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteAggregate</span> <span class="keyword">implements</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; aggregate = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        aggregate.add(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">        aggregate.remove(o);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">getIterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ConcreteIterator(aggregate);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽象迭代器接口：定义访问和遍历聚合元素的接口，通常包含 hasNext()、first()、next() 等方法。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="function">Object <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Object <span class="title">first</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.Iterator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 具体迭代器实现类：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; list;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer index = -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConcreteIterator</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.list = list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hasNext() ? list.get(++index) : <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">first</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> list.get(index);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> index &lt; list.size() - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.impl.ConcreteAggregate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IteratorPatternTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Arrange</span></span><br><span class="line">        Aggregate aggregate = <span class="keyword">new</span> ConcreteAggregate();</span><br><span class="line">        aggregate.add(<span class="string">"item1"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item2"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item3"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item4"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item5"</span>);</span><br><span class="line">        Iterator iterator = aggregate.getIterator();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Act</span></span><br><span class="line">        <span class="keyword">boolean</span> result = iterator.hasNext();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Assert</span></span><br><span class="line">        assertTrue(result);</span><br><span class="line">        assertEquals(<span class="string">"item1"</span>, iterator.next());</span><br><span class="line">        assertEquals(<span class="string">"item2"</span>, iterator.next());</span><br><span class="line">        assertEquals(<span class="string">"item3"</span>, iterator.next());</span><br><span class="line">        assertEquals(<span class="string">"item4"</span>, iterator.next());</span><br><span class="line">        assertEquals(<span class="string">"item5"</span>, iterator.next());</span><br><span class="line">        assertFalse(iterator.hasNext());</span><br><span class="line">        assertNull(iterator.next());</span><br><span class="line">        assertEquals(<span class="string">"item1"</span>, iterator.first());</span><br><span class="line">        assertTrue(iterator.hasNext());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIterator_ergodic</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Arrange</span></span><br><span class="line">        Aggregate aggregate = <span class="keyword">new</span> ConcreteAggregate();</span><br><span class="line">        aggregate.add(<span class="string">"item1"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item2"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item3"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item4"</span>);</span><br><span class="line">        aggregate.add(<span class="string">"item5"</span>);</span><br><span class="line">        Iterator iterator = aggregate.getIterator();</span><br><span class="line"></span><br><span class="line">        StringBuilder result = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Act</span></span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">            result.append(iterator.next());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Assert</span></span><br><span class="line">        assertEquals(<span class="string">"item1item2item3item4item5"</span>, result.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="案例地址"><a href="#案例地址" class="headerlink" title="案例地址"></a>案例地址</h2><p>欢迎大家访问我的Github地址，如果喜欢的话，希望能给个Star，<a href="https://github.com/Normcorer/Iterator-Pattern.git" target="_blank" rel="noopener">点击此处获取本案例源码</a></p>
+<hr>
+<blockquote>
+<p>该文章参考的原文链接 <a href="http://c.biancheng.net/view/1395.html" target="_blank" rel="noopener">http://c.biancheng.net/view/1395.html</a><br>如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p>
+</blockquote>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>
 
       
     </div>
@@ -468,7 +495,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/index.html" rel="tag"># hexo</a>
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F/index.html" rel="tag"># 代码质量</a>
           
         </div>
       
@@ -496,15 +523,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/p/d3e8e26b.html" rel="next" title="命令模式的见解与案例">
+                <i class="fa fa-chevron-left"></i> 命令模式的见解与案例
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/p/7156016b.html" rel="prev" title="CentOS添加开机自启动命令及脚本">
-                CentOS添加开机自启动命令及脚本 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -659,7 +686,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-Page"><span class="nav-number">1.1.</span> <span class="nav-text">GitHub Page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ali-OSS"><span class="nav-number">1.2.</span> <span class="nav-text">Ali OSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ali-ECS"><span class="nav-number">1.3.</span> <span class="nav-text">Ali ECS</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">2.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构"><span class="nav-number">3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">4.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">5.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例地址"><span class="nav-number">6.</span> <span class="nav-text">案例地址</span></a></li></ol></div>
             
 
           </div>
