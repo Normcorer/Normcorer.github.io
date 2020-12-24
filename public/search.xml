@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Ping命令如何测网速</title>
+      <link href="/p/fa8bb93b.html"/>
+      <url>/p/fa8bb93b.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近工作上遇到一件奇怪的事情，先说一下事情的原委：</p><p>环境：CPU(英特尔十代高压具体什么型号忘记了)，内存16G，千兆网卡，千兆TENDA交换机，千兆TP-LINK交换机</p><p>项目还是之前的高并发项目，消息队列用的是RocketMQ，部署在本地服务器上，（由于服务器刚搬到公司，TP-LINK交换机是临时随便买的）在进行性能测试的时候开启了20个线程边生产边消费大概TPS在1W3左右，于是去网上找了类似配置的测试报告，大多在3W+，于是开始对RocketMQ进行调优，各种方式都试过了，TPS还是不如人意，后来想到是否是网络的原因，于是我Ping我同事的主机大概算出来在48MB/s,然后我Ping本地服务器12MB/s,这就奇怪了，最后发现是TP-LINK交换机的问题。</p><p>我把项目JAR包形式，运行在本地服务器上测试，单生产的TPS达到了5W+,因为走的是内网所以非常快。</p><p>非常不幸，这篇文章本来已经写完了，但是由于和阿里云的服务器断开连接了，没能及时发布保存，然后我通过cmd+c命令复制，后来又手贱复制的别的东西，替换掉了内存中剪切内容，百度了一下Mac没有自带记录剪贴的功能，十分郁闷。凭记忆又重新写了一遍。</p><hr><h2 id="Ping命令简单测试网速"><a href="#Ping命令简单测试网速" class="headerlink" title="Ping命令简单测试网速"></a>Ping命令简单测试网速</h2><h3 id="Mac-OS"><a href="#Mac-OS" class="headerlink" title="Mac OS"></a>Mac OS</h3><p>因为这篇文章是在家里写的所以只能拿Mac OS来演示了，Mac OS的命令和Linux基本相同因此这边只介绍一个。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#发送1200byte到指定IP或者域名</span><br><span class="line">ping -s 1200 www.baidu.com</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#发送4次,1200byte到指定IP或者域名</span><br><span class="line">ping -c 4 -s 1200 www.baidu.com</span><br></pre></td></tr></table></figure><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-12-24/Mac-Ping.png" alt="Mac-Ping"></p><p>观察上面结果，我们来粗略的算一下ping的网速</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1200(byte)&#x2F;1024(kb)&#x2F;22.091ms*1000 &#x3D; 53.04KB&#x2F;s</span><br></pre></td></tr></table></figure><p>由于ping是发送指定大小的数据包，到指定服务器然后服务器进行响应，这个和下载的速度不是一个概念，这边可以粗略的看清楚现在的网速是否正常.</p><p>一般普通宽带我们ping常用的网址，延迟在50ms以内都为正常的</p><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#发送1200byte到指定IP或者域名</span><br><span class="line">ping -l 1200 www.baidu.com</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#发送4次，1200byte到指定IP或者域名</span><br><span class="line">ping -n 4 -l 1200 www.baidu.com</span><br></pre></td></tr></table></figure><hr><blockquote><p>如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p></blockquote><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 计算机网络 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>迭代器模式的见解与案例</title>
       <link href="/p/7b516276.html"/>
       <url>/p/7b516276.html</url>
