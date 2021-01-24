@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-01-19/Minor%20GC2.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
 <meta property="article:published_time" content="2021-01-19T15:12:00.000Z">
-<meta property="article:modified_time" content="2021-01-21T15:32:24.511Z">
+<meta property="article:modified_time" content="2021-01-24T07:18:12.448Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -480,7 +480,7 @@
 <p>即使在可达性分析算法中不可达的对象，非回收不可，这时候它们暂时处于“缓刑”阶段，要真正宣告一个对象死亡，至少要经历再次标记过程。<br>标记的前提是对象在进行可达性分析后发现没有与GC Roots相连接的引用链。<br><strong><em>第一次标记并进行一次筛选:</em></strong><br>筛选的条件是此对象是否有必要执行finalize()方法。<br>当对象没有覆盖finalize方法，或者finzlize方法已经被虚拟机调用过，虚拟机将这两种情况都视为没有必要执行，对象被回收。<br><strong><em>第二次标记:</em></strong><br>如果这个对象被判定为有必要执行finalize（）方法，那么这个对象将会被放置在一个名为：F-Queue的队列之中，并在稍后由一条虚拟机自动建立的、低优先级的Finalizer线程去执行。这里所谓的执行是指虚拟机会触发这个方法，但并不承诺会等待它运行结束。这样做的原因是，如果一个对象finalize（）方法中执行缓慢，或者发生死循环（更极端的情况），将很可能会导致F-Queue队列中的其他对象永久处于等待状态，甚至导致整个内存回收系统崩溃。<br>Finalize（）方法是对象脱逃死亡命运的最后一次机会，稍后GC将对F-Queue中的对象进行第二次小规模标记，如果对象要在finalize（）中成功拯救自己—-只要重新与引用链上的任何的一个对象建立关联即可，譬如把自己赋值给某个类变量或对象的成员变量，那在第二次标记时它将移除出“即将回收”的集合。如果对象这时候还没逃脱，那基本上它就真的被回收了。<br><a href="https://www.jianshu.com/p/8f5fa8288d9b" target="_blank" rel="noopener">原文链接</a></p>
 </blockquote>
 <hr>
-<h2 id="回收算法"><a href="#回收算法" class="headerlink" title="回收算法"></a>回收算法</h2><p>由于JDK对垃圾收集器并没有制定规范，所以哥哥厂商都采用不同的方式来实现垃圾收集器，下面介绍四种主流的垃圾回收算法。</p>
+<h2 id="回收算法"><a href="#回收算法" class="headerlink" title="回收算法"></a>回收算法</h2><p>由于JDK对垃圾收集器并没有制定规范，所以各个厂商都采用不同的方式来实现垃圾收集器，下面介绍四种主流的垃圾回收算法。</p>
 <h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p>该算法是最基础的收集算法。算法分为标记和清除两个阶段：首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象(标记过程主要是上述的可达性分析算法)。后续的收集算法都是基于这种思路并对其不足加以改进而已。</p>
 <p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-01-19/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4.png" alt="标记-清除算法"></p>
 <p><strong>严重问题：</strong><br>通过该算法回收的内存，会产生大量的内存碎片，由上图就很好理解，存活对象并不是在一块的，由此产生一块块分散的未使用内存空间，会导致无法申请一个<font color = "red">比较大</font>的<font color = "red">连续</font>的内存空间。</p>
@@ -571,6 +571,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/p/5b25d7d2.html" rel="prev" title="HotSpot经典垃圾收集器">
+                HotSpot经典垃圾收集器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -653,7 +657,7 @@
               
                 <a href="/archives/index.html%7C%7C%20archive">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
