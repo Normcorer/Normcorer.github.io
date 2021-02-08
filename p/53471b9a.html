@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CentOS,定时任务," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,22 +79,16 @@
 
 
 
-<meta name="description" content="概述crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。该词来源于希腊语 chronos(χρνο)，原意是时间。通常，crontab储存的指令被守护进程激活， crond常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。 Linux">
+<meta name="description" content="前言最近在准备面试，所以重新复习下多线程基础方面的知识，后续还会跟进JUC包下常用的类等。多线程基础方面知识也好久没看了，这边学习了廖雪峰老师的课,在这做下笔记，下文大多都是引用廖雪峰老师的笔记，记录一些平时比较模糊的地方。 多线程基础特别注意：直接调用Thread实例的run()方法是无效的。可以对线程设置优先级Thread.setPriority(int n) &#x2F;&#x2F;1~10, 默认值5。优先级">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS定时任务">
-<meta property="og:url" content="http://yoursite.com/p/e3889fed.html">
+<meta property="og:title" content="多线程基础">
+<meta property="og:url" content="http://yoursite.com/p/53471b9a.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="概述crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。该词来源于希腊语 chronos(χρνο)，原意是时间。通常，crontab储存的指令被守护进程激活， crond常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。 Linux">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E6%9F%A5%E7%9C%8B%E5%AE%9A%E6%97%B6%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81.png">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/crontab%E5%86%99%E6%B3%95.png">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%97%A5%E5%BF%97.png">
-<meta property="article:published_time" content="2020-06-30T15:17:00.000Z">
-<meta property="article:modified_time" content="2020-07-10T17:06:20.574Z">
+<meta property="og:description" content="前言最近在准备面试，所以重新复习下多线程基础方面的知识，后续还会跟进JUC包下常用的类等。多线程基础方面知识也好久没看了，这边学习了廖雪峰老师的课,在这做下笔记，下文大多都是引用廖雪峰老师的笔记，记录一些平时比较模糊的地方。 多线程基础特别注意：直接调用Thread实例的run()方法是无效的。可以对线程设置优先级Thread.setPriority(int n) &#x2F;&#x2F;1~10, 默认值5。优先级">
+<meta property="article:published_time" content="2021-02-08T09:03:00.000Z">
+<meta property="article:modified_time" content="2021-02-08T09:07:44.838Z">
 <meta property="article:author" content="MolZhao">
-<meta property="article:tag" content="CentOS">
-<meta property="article:tag" content="定时任务">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E6%9F%A5%E7%9C%8B%E5%AE%9A%E6%97%B6%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81.png">
 
 
 
@@ -124,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/p/e3889fed.html"/>
+  <link rel="canonical" href="http://yoursite.com/p/53471b9a.html"/>
 
 
 
 
 
-  <title>CentOS定时任务 | Molzhao</title>
+  <title>多线程基础 | Molzhao</title>
   
 
 
@@ -301,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/e3889fed.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/53471b9a.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MolZhao">
@@ -318,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CentOS定时任务</h1>
+          <h1 class="post-title" itemprop="name headline">多线程基础</h1>
         
 
         <div class="post-meta">
@@ -330,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-30T23:17:00+08:00">
-                2020-06-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-08T17:03:00+08:00">
+                2021-02-08
               </time>
             
 
@@ -341,28 +335,6 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/index.html" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
 
           
             
@@ -371,8 +343,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/p/e3889fed.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/p/e3889fed.html" itemprop="commentCount"></span>
+                <a href="/p/53471b9a.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/p/53471b9a.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -399,7 +371,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  648 字
+                  1.5k 字
                 </span>
               
 
@@ -415,7 +387,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -436,41 +408,53 @@
       
 
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>crontab命令常见于Unix和类Unix的操作系统之中，用于设置周期性被执行的指令。该命令从标准输入设备读取指令，并将其存放于“crontab”文件中，以供之后读取和执行。该词来源于希腊语 chronos(χρνο)，原意是时间。通常，crontab储存的指令被守护进程激活， crond常常在后台运行，每一分钟检查是否有预定的作业需要执行。这类作业一般称为cron jobs。</p>
-<p>Linux crontab是用来定期执行程序的命令。<br>当安装完成操作系统之后，默认便会启动此任务调度命令。<br>crond 命令每分锺会定期检查是否有要执行的工作，如果有要执行的工作便会自动执行该工作。</p>
-<h2 id="crontab使用"><a href="#crontab使用" class="headerlink" title="crontab使用"></a>crontab使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Options:</span><br><span class="line"> -u &lt;user&gt;  define user</span><br><span class="line"> -e         edit user&#39;s crontab</span><br><span class="line"> -l         list user&#39;s crontab</span><br><span class="line"> -r         delete user&#39;s crontab</span><br><span class="line"> -i         prompt before deleting</span><br><span class="line"> -n &lt;host&gt;  set host in cluster to run users&#39; crontabs</span><br><span class="line"> -c         get host in cluster to run users&#39; crontabs</span><br><span class="line"> -s         selinux context</span><br><span class="line"> -x &lt;mask&gt;  enable debugging</span><br></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在准备面试，所以重新复习下多线程基础方面的知识，后续还会跟进JUC包下常用的类等。多线程基础方面知识也好久没看了，这边学习了<a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472" target="_blank" rel="noopener">廖雪峰老师的课</a>,在这做下笔记，下文大多都是引用廖雪峰老师的笔记，记录一些平时比较模糊的地方。</p>
+<h2 id="多线程基础"><a href="#多线程基础" class="headerlink" title="多线程基础"></a>多线程基础</h2><p>特别注意：直接调用Thread实例的<code>run()</code>方法是无效的。<br>可以对线程设置优先级<code>Thread.setPriority(int n) //1~10, 默认值5</code>。优先级高的线程被操作系统调度的优先级较高，操作系统对高优先级线程<strong>可能</strong>调度更频繁，但我们绝不能通过设置优先级来确保高优先级的线程一定会先执行。</p>
+<hr>
+<h2 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h2><p>在Java程序中，一个线程对象只能调用一次<code>start()</code>方法来启动新线程，并在新线程中执行<code>run()</code>方法。一旦<code>run()</code>方法执行完毕，线程就结束了。因此Java线程的状态有下面几种</p>
+<ol>
+<li>New：新创建的线程，尚未执行。</li>
+<li>Runnable：运行中的线程，正在执行<code>run()</code>方法的Java代码。</li>
+<li>Block：运行中的线程，因为某些操作被阻塞而挂起。</li>
+<li>Waiting：运行中的线程，因为某些操作在等待中。</li>
+<li>Timed Waiting：运行中的线程，因为执行<code>sleep()</code>方法正在计时等待。</li>
+<li>Terminated：线程已终止，因为<code>run()</code></li>
+</ol>
+<p>当线程启动后，他可以在<code>Runnable</code>、<code>Block</code>、<code>Waiting</code>和<code>Timed Waiting</code>这几个状态之间切换，直到最后变成<code>Terminated</code>状态线程终止。</p>
+<p>线程终止的原因有：</p>
+<ol>
+<li>线程正常终止：<code>run()</code>方法执行到<code>return</code>语句返回；</li>
+<li>线程以外终止：<code>run()</code>方法因为未捕获的异常导致线程终止；</li>
+<li>对某个线程的<code>Thread</code>实例调用<code>stop()</code>方法强制终止（强烈不推荐使用）。</li>
+</ol>
+<p>一个线程还可以等待另一个线程知道运行结束。例如<code>main</code>线程在启动<code>a</code>线程后，可以通过<code>a.join()</code>等待<code>a</code>线程结束后再继续运行。</p>
+<p>如果<code>a</code>线程已经结束，对实例<code>a</code>调用<code>a.join()</code>会立刻返回。此外，<code>join(long)</code>的重载方法也可以指定一个等待时间，超过等待时间后就不再继续等待。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JoinTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread a = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"thead-a"</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(<span class="string">"start"</span>);</span><br><span class="line">        a.start();</span><br><span class="line">        a.join();</span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">hello</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h2><p>中断一个线程非常简单，只需要在其他线程中对目标线程调用<code>interrupt()</code>方法，目标线程需要反复检测自身状态是否是<code>interrupted</code>状态，如果是，就立刻结束运行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread t = <span class="keyword">new</span> MyThread();</span><br><span class="line">        t.start();</span><br><span class="line">        Thread.sleep(<span class="number">1</span>); <span class="comment">// 暂停1毫秒</span></span><br><span class="line">        t.interrupt(); <span class="comment">// 中断t线程</span></span><br><span class="line">        t.join(); <span class="comment">// 等待t线程结束</span></span><br><span class="line">        System.out.println(<span class="string">"end"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (!isInterrupted()) &#123;</span><br><span class="line">            n ++;</span><br><span class="line">            System.out.println(n + <span class="string">" hello!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 hello!</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>上述代码中，<code>main</code>线程通过调用<code>t.interrupt()</code>方法中断<code>t</code>线程，但是要注意，<code>interrupt()</code>方法仅仅向<code>t</code>线程发出了“中断请求”，至于t线程是否能立刻响应，要看具体代码。而<code>t</code>线程的<code>while</code>循环会检测<code>isInterrupted()</code>，所以上述代码能正确响应<code>interrupt()</code>请求，使得自身立刻结束运行<code>run()</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span>  <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        HelloThread t = <span class="keyword">new</span> HelloThread();</span><br><span class="line">        t.start();</span><br><span class="line">        Thread.sleep(<span class="number">1</span>);</span><br><span class="line">        t.running = <span class="keyword">false</span>; <span class="comment">// 标志位置为false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">volatile</span> <span class="keyword">boolean</span> running = <span class="keyword">true</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (running) &#123;</span><br><span class="line">            n ++;</span><br><span class="line">            System.out.println(n + <span class="string">" hello!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"end!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 hello!</span><br><span class="line">2 hello!</span><br><span class="line">3 hello!</span><br><span class="line">end!</span><br></pre></td></tr></table></figure>
+<p>中断线程的第二种方法就是，通过标记位来进行中断。<br>注意到<code>HelloThread</code>的标志位<code>boolean running</code>是一个线程间共享的变量。线程间共享变量需要使用volatile关键字标记，确保每个线程都能读取到更新后的变量值。</p>
+<p>为什么要对线程间共享的变量用关键字volatile声明？这涉及到Java的内存模型。在Java虚拟机中，变量的值保存在主内存中，但是，当线程访问变量时，它会先获取一个副本，并保存在自己的工作内存中。如果线程修改了变量的值，虚拟机会在某个时刻把修改后的值回写到主内存，但是，这个时间是不确定的！</p>
+<p><code>volatile</code>关键字的主要就是通知JVM：</p>
+<ol>
+<li>每次访问变量时，总是获取主内存的最新值。</li>
+<li>每次修改变量后，立刻回写到主内存中。</li>
+</ol>
+<p><code>volatile</code>关键字解决的是可见性问题：当一个线程修改了某个共享变量的值，其他线程能够立刻看到修改后的值。</p>
+<p>如果我们去掉<code>volatile</code>关键字，运行上述程序，发现效果和带<code>volatile</code>差不多，这是因为在<code>x86</code>的架构下，JVM回写主内存的速度非常快，但是，换成<code>ARM</code>的架构，就会有显著的延迟。</p>
+<hr>
+<h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><p>Java程序入口是<code>main</code>线程，<code>main</code>线程又能启动其他线程，只有当所有线程都运行结束的时候，<code>JVM</code>才会退出，如果一个线程没有退出，<code>JVM</code>进程就不会退出，所以，必须保证所有线程都能及时结束。</p>
+<p>当一个死循环的线程被创建，说名这个线程不能被结束。那JVM进程就无法结束，但谁负责结束这个线程呢。<br>我们可以将这个线程设置为守护线程，因为所有非守护线程执行完毕之后，无论有没有守护线程，虚拟机都会自动退出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Thread a = <span class="keyword">new</span> TestThread();</span><br><span class="line">a.setDaemon(<span class="keyword">true</span>);</span><br><span class="line">a.start();</span><br></pre></td></tr></table></figure>
+<p>我们可以在线程<code>start()</code>前设置<code>setDaemon(true)</code>可以将该线程标志为守护线程。</p>
+<p>特别注意：守护线程不能持有需要关闭的资源，因为JVM退出时，守护线程没有任何机会来关闭资源，很有可能导致数据丢失。</p>
+<hr>
 
-<ul>
-<li>我们使用service crond status命令来查看当前定时服务是否开启</li>
-</ul>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E6%9F%A5%E7%9C%8B%E5%AE%9A%E6%97%B6%E6%9C%8D%E5%8A%A1%E7%8A%B6%E6%80%81.png" alt="查看定时服务状态"></p>
-<ul>
-<li>使用crontab -e来创建一个定时任务<br>首先我们简单的创建一个shell脚本,输出一个hello world</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world!&quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;crontab</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/crontab%E5%86%99%E6%B3%95.png" alt="cron写法"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#然后输入来创建当前用户下的定时任务</span><br><span class="line">crontab -e</span><br><span class="line">#在该定时任务文件下，写入任务脚本，该任务表示每5分钟跑一次</span><br><span class="line">5 * * * * sh&#x2F;home&#x2F;sh&#x2F;helloworld.sh</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用crontab -l来查看当前用户下的定时任务</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@zyj sh]# crontab -l</span><br><span class="line">*&#x2F;3 * * * * sh &#x2F;home&#x2F;admin&#x2F;edas-agent&#x2F;bin&#x2F;monitor.sh</span><br><span class="line">5 * * * * sh&#x2F;home&#x2F;sh&#x2F;helloworld.sh </span><br><span class="line">[root@zyj sh]#</span><br></pre></td></tr></table></figure>
-<p>发现我们的定时任务，已经在当前用户下了</p>
-<ul>
-<li>具体各个用户的定时任务</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@zyj sh]# cd &#x2F;var&#x2F;spool&#x2F;cron&#x2F;</span><br><span class="line">[root@zyj cron]# ls</span><br><span class="line">admin  root</span><br><span class="line">[root@zyj cron]# cat root</span><br><span class="line">*&#x2F;3 * * * * sh &#x2F;home&#x2F;admin&#x2F;edas-agent&#x2F;bin&#x2F;monitor.sh</span><br><span class="line">5 * * * * sh &#x2F;home&#x2F;sh&#x2F;helloworld.sh </span><br><span class="line">[root@zyj cron]#</span><br></pre></td></tr></table></figure>
-<p>可以看到当前root用户下的所有定时任务，同样道理也可以看到admin的</p>
-<ul>
-<li>通过定时任务日志来确定定时任务是否生效</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#因为我们刚配置定时任务，需要重启服务生效</span><br><span class="line">systemctl restart crond</span><br><span class="line">#查看定时任务日志</span><br><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;cron</span><br></pre></td></tr></table></figure>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-30/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%97%A5%E5%BF%97.png" alt="定时任务日志"></p>
-<ul>
-<li>删除定时任务</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#删除当前用户下所有的定时任务,慎用</span><br><span class="line">crontab -r</span><br><span class="line">#删除指定定时任务，删除我们不需要的定时任务即可</span><br><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -484,14 +468,6 @@
     
 
     <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/CentOS/index.html" rel="tag"># CentOS</a>
-          
-            <a href="/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/index.html" rel="tag"># 定时任务</a>
-          
-        </div>
       
 
       
@@ -517,8 +493,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/p/9a526a8e.html" rel="next" title="同步阻塞IO---BIO">
-                <i class="fa fa-chevron-left"></i> 同步阻塞IO---BIO
+              <a href="/p/6b0deb04.html" rel="next" title="垃圾回收机制进阶">
+                <i class="fa fa-chevron-left"></i> 垃圾回收机制进阶
               </a>
             
           </div>
@@ -526,10 +502,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/p/255903b5.html" rel="prev" title="数据库批量新增及更新效率测试">
-                数据库批量新增及更新效率测试 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -684,7 +656,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crontab使用"><span class="nav-number">2.</span> <span class="nav-text">crontab使用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程基础"><span class="nav-number">2.</span> <span class="nav-text">多线程基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程状态"><span class="nav-number">3.</span> <span class="nav-text">线程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程中断"><span class="nav-number">4.</span> <span class="nav-text">线程中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#守护线程"><span class="nav-number">5.</span> <span class="nav-text">守护线程</span></a></li></ol></div>
             
 
           </div>

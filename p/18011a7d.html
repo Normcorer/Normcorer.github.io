@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-01-19/Minor%20GC2.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
 <meta property="article:published_time" content="2021-01-19T15:12:00.000Z">
-<meta property="article:modified_time" content="2021-01-24T07:18:12.448Z">
+<meta property="article:modified_time" content="2021-02-06T12:53:51.142Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2.8k 字
+                  2.9k 字
                 </span>
               
 
@@ -509,6 +509,7 @@
 <p>接下来的每次<font color = "red">Minor GC</font>都和上面的流程一样，每次都需要清扫一个Eden区和一个Survivor区。</p>
 <p><strong><em>Q1:对象什么时候从新生代进入老年代？</em></strong><br>新生代的每一次Minor GC都会使存活对象的年龄加1，也就是存活对象的复制次数。当年龄到达一个阈值的时候，该对象就会被放入老年代，这个阈值默认是15。</p>
 <p><strong><em>Q2:进入老年代的方式有哪些？</em></strong><br>1.如果Minnor GC的存活对象比Survivor区大，那么这些对象会过早老化，直接进入老年带<br>2.经历15次Minor GC的对象<br>3.大数组，大字符串等会直接在老年代中进行创建。</p>
+<p><strong><em>Q3:分代年龄可否设置成31？</em></strong><br>因为分代年龄在对象中占4位，4位二进制最大是15，因此不能设置成31。</p>
 <hr>
 <h3 id="老年代回收"><a href="#老年代回收" class="headerlink" title="老年代回收"></a>老年代回收</h3><p>由于老年代的GC频率较低，通常使用<code>标记-整理</code>算法来进行回收，老年代的回收又称为<font color = "red">Major GC</font>。</p>
 <hr>
@@ -657,7 +658,7 @@
               
                 <a href="/archives/index.html%7C%7C%20archive">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
