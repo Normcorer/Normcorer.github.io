@@ -17,11 +17,11 @@
     
     
     <entry>
-      <title>垃圾回收机制进阶</title>
+      <title>HotSpot经典垃圾收集器(2)</title>
       <link href="/p/6b0deb04.html"/>
       <url>/p/6b0deb04.html</url>
       
-        <content type="html"><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2>]]></content>
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前的<a href="https://molzhao.xyz/p/5b25d7d2.html" target="_blank" rel="noopener">文章</a>我们讲到了一部分垃圾收集器，这次我们聊一下CMS和G1垃圾收集器。在聊这两个收集器之前我们需要了解一个知识：并发标记。这是CMS和G1中非常重要的原理。</p><hr><h2 id="并发标记"><a href="#并发标记" class="headerlink" title="并发标记"></a>并发标记</h2><h3 id="为什么引入并发标记"><a href="#为什么引入并发标记" class="headerlink" title="为什么引入并发标记"></a>为什么引入并发标记</h3><p>我们知道HotSpot的垃圾收集器都是通过可达性分析算法来标记无用的对象的，在标记的时候都会让用户线程停顿一下，我们称之为STW。</p><p>Q1:为什么要STW？<br>A1:就是防止在标记的过程中，用户线程对象创建和销毁操作，导致最后标记结果不准，垃圾回收后造成严重后果。</p><p>当堆越大的时候，我们STW的时间也就越长，这显然严重影响到了我们的性能，如何让用户线程等待的时间缩短呢？于是就引入了并发标记这个概念，也就是和用户线程并发执行。</p><h3 id="并发标记的问题与解决"><a href="#并发标记的问题与解决" class="headerlink" title="并发标记的问题与解决"></a>并发标记的问题与解决</h3><p>前面我们说到STW的作用是防止用户线程对象创建和销毁操作，导致最后标记结果不准，那并发标记就肯定存在这个问题。</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-02-08/%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0%E7%9A%84%E9%97%AE%E9%A2%98.png" alt="并发标记的问题"></p><p>对象消失问题：在扫描过程中<u>插入了一条或者多条从黑色对象到白色对象的新引用</u>，并且同时<u>去掉了灰色对象到白色对象的引用</u>，由于可达性分析算法，不会在回头重新扫描，由此引发对象消失问题。</p><p>解决这个问题其实就是破坏上面下划线的两个条件之一即可：</p><p><strong>标记三阶段：</strong></p><ol><li>初始标记：标记GC ROOTS能直连的对象。</li><li>并发标记：进行可达性分析算法标记。</li><li>重新标记</li></ol><p>方案一：增量更新（CMS采用的方案）<br>增量更新就是在并发标记的时候如果有新增引用的话就将引用记录下来，在重新标记阶段根据记录在重新扫描一遍。</p><p>方案二：原始快照（SATB，G1采用的方案）<br>原始快照就是在并发标记的时候如果有删除引用的话就将引用记录下来，在最终标记阶段根据记录在重新扫描一遍。</p><hr><h2 id="跨代引用问题"><a href="#跨代引用问题" class="headerlink" title="跨代引用问题"></a>跨代引用问题</h2><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-02-08/%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98.png" alt="跨代引用问题"></p><p>如上图我们发现新生代中的对象被老年代所引用，在新生代中没有直接的<code>GC ROOTS</code>指向，但是老年代中指向了该对象，这时该对象是不应该被回收的。由此引出了跨代引用的问题。</p><h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h3><p>这个方案是我们最容易想到的，我们知道新生代的不可达对象不一定是垃圾，所以在每次可达性分析的时候遍历下老年代是否有对象引用了新生代中的对象，由于MinorGC很频繁，每次都需要遍历老年代的代价太大，同时存在跨代引用的情况也相对来说比较少。</p><h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><p>我们需要在新生代中创建一个记忆集的数组，里面的指针记录着老年代的<code>区域</code>如果记录的这块区域里的对象引用了新生代中的对象，则将这块区域标识为1，这种记录老年代区域的记忆表也称之为<code>卡表</code>。</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-02-08/%E5%8D%A1%E8%A1%A8.png" alt="卡表"></p><p>这样在下一次GC的时候，只需要扫描卡中存在引用的老年代区域即可，从而避免了对整个老年代进行扫描。</p><p><strong>引用实时变化，卡表记录信息过时怎么办？</strong><br>我们需要进行动态维护，我们需要在修改那一刻去维护卡表，通过写屏障，也可以理解为AOP切面，只要发生引用对象的赋值操作就会产生一个环形通知（即改变前后都有通知），将维护的代码写入通知处理中即可。</p><hr><h2 id="CMS垃圾收集器"><a href="#CMS垃圾收集器" class="headerlink" title="CMS垃圾收集器"></a>CMS垃圾收集器</h2><p>CMS（Concurrent Mark Swap）从字面意思上来说为并发标记清除。<br>设计目的：追求一个最短的停顿时间可以让用户线程和GC线程在某一阶段同时执行，不需要STW。</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-02-08/CMS%E5%9B%9B%E9%98%B6%E6%AE%B5.png" alt="CMS并发四阶段"></p><p><strong>CMS并发四阶段</strong>：</p><ol><li>初始标记：标记GC ROOTS能直连的对象，这个过程很快，将这些对象压入扫描栈中。</li><li>并发标记：根据扫描栈中的对象进行递归扫描，根据栈中的对象引用遍历出一个对象图出来，再此期间对象的引用关系的赋值会被记录下来。</li><li>重新标记：这个阶段也就是解决对象消失问题的阶段，根据之前的记录下来的引用关系在重新标记。停顿为了防止最后标记结果不准确。</li><li>并发清除：对标记好的垃圾进行并发清除。</li></ol><p><strong>优点</strong><br>只需要七个字就能概括CMS垃圾收集器：<font color="red">并发收集低停顿</font></p><p><strong>缺点</strong></p><ol><li>并发相对占用CPU资源，使得程序变慢。</li><li>无法清除浮动垃圾，因为在并发标记阶段用户线程产生的垃圾，无法被清除，只能等待下一次的GC。</li><li>CMS不会等待老年代内存用完才开始GC，因为他要给用户线程留预留空间，JDK1.6的阈值为92%，但是用户线程8%也不够用，如果不够用的情况，会立即冻结用户线程，此时Serial Old收集器就会登场，代替CMS收拾残局。</li><li>标记-清除带来的内存碎片问题，解决就是在FullGC的时候进行一次整理，此时需要STW，可以设置在几次FullGC的时候来整理压缩空间。</li></ol><hr>]]></content>
       
       
       <categories>
@@ -61,7 +61,7 @@
     
     
     <entry>
-      <title>HotSpot经典垃圾收集器</title>
+      <title>HotSpot经典垃圾收集器(1)</title>
       <link href="/p/5b25d7d2.html"/>
       <url>/p/5b25d7d2.html</url>
       
