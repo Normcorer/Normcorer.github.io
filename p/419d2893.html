@@ -79,18 +79,16 @@
 
 
 
-<meta name="description" content="这天我们说了二十句话十年来的五分之一剩下没有几个十年了，我和他此后余生还会突然聊起天来么 想到这里我就打开了他的朋友圈。只有孤零零的一条，发于一年前的今日是我入围某个文学奖的新闻无人点赞。没有任何共同朋友因为他是我的父亲 –文珍《鲸鱼破冰》">
+<meta name="description" content="前言谈到事务，那是面试必问的问题，事务比较抽象，他可以是一条sql，也可以是一段程序，如果没有事务这个概念，我们在编程过程中的复杂度会大大增加，比如一个很贴近生活的例子： 你的爸爸妈妈同时像你支付宝里转了500块钱，你爸爸的转账请求读到你当前钱包里有1000块钱，与此同时你妈妈的转账请求也读到了你钱包的余额，于是一起对余额进行操作，1000+500&#x3D;1500，于是你的余额变成了1500块。 之后你">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2020-06-21">
-<meta property="og:url" content="http://yoursite.com/p/8d5e8318.html">
+<meta property="og:title" content="事务隔离及事务传播机制">
+<meta property="og:url" content="http://yoursite.com/p/419d2893.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="这天我们说了二十句话十年来的五分之一剩下没有几个十年了，我和他此后余生还会突然聊起天来么 想到这里我就打开了他的朋友圈。只有孤零零的一条，发于一年前的今日是我入围某个文学奖的新闻无人点赞。没有任何共同朋友因为他是我的父亲 –文珍《鲸鱼破冰》">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-21/%E9%92%B1%E5%A1%98%E6%B1%9F.jpg">
-<meta property="article:published_time" content="2020-06-21T12:55:00.000Z">
-<meta property="article:modified_time" content="2020-06-21T13:03:35.976Z">
+<meta property="og:description" content="前言谈到事务，那是面试必问的问题，事务比较抽象，他可以是一条sql，也可以是一段程序，如果没有事务这个概念，我们在编程过程中的复杂度会大大增加，比如一个很贴近生活的例子： 你的爸爸妈妈同时像你支付宝里转了500块钱，你爸爸的转账请求读到你当前钱包里有1000块钱，与此同时你妈妈的转账请求也读到了你钱包的余额，于是一起对余额进行操作，1000+500&#x3D;1500，于是你的余额变成了1500块。 之后你">
+<meta property="article:published_time" content="2021-02-28T15:06:00.000Z">
+<meta property="article:modified_time" content="2021-02-28T15:23:43.306Z">
 <meta property="article:author" content="MolZhao">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-21/%E9%92%B1%E5%A1%98%E6%B1%9F.jpg">
 
 
 
@@ -120,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/p/8d5e8318.html"/>
+  <link rel="canonical" href="http://yoursite.com/p/419d2893.html"/>
 
 
 
 
 
-  <title>2020-06-21 | Molzhao</title>
+  <title>事务隔离及事务传播机制 | Molzhao</title>
   
 
 
@@ -297,7 +295,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/8d5e8318.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/419d2893.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MolZhao">
@@ -314,7 +312,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2020-06-21</h1>
+          <h1 class="post-title" itemprop="name headline">事务隔离及事务传播机制</h1>
         
 
         <div class="post-meta">
@@ -326,8 +324,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-21T20:55:00+08:00">
-                2020-06-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-28T23:06:00+08:00">
+                2021-02-28
               </time>
             
 
@@ -349,8 +347,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/index.html" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.html" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -367,8 +365,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/p/8d5e8318.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/p/8d5e8318.html" itemprop="commentCount"></span>
+                <a href="/p/419d2893.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/p/419d2893.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -395,7 +393,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  111 字
+                  1.6k 字
                 </span>
               
 
@@ -411,7 +409,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -432,10 +430,49 @@
       
 
       
-        <p>这天我们说了二十句话<br>十年来的五分之一<br>剩下没有几个十年了，我和他<br>此后余生还会突然聊起天来么</p>
-<p>想到这里我就打开了他的朋友圈。<br>只有孤零零的一条，发于一年前的今日<br>是我入围某个文学奖的新闻<br>无人点赞。没有任何共同朋友<br>因为他是我的父亲</p>
-<p>–文珍《鲸鱼破冰》</p>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-06-21/%E9%92%B1%E5%A1%98%E6%B1%9F.jpg" alt="生日快乐小赵"></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>谈到事务，那是面试必问的问题，事务比较抽象，他可以是一条sql，也可以是一段程序，如果没有事务这个概念，我们在编程过程中的复杂度会大大增加，比如一个很贴近生活的例子：</p>
+<p>你的爸爸妈妈同时像你支付宝里转了500块钱，你爸爸的转账请求读到你当前钱包里有1000块钱，与此同时你妈妈的转账请求也读到了你钱包的余额，于是一起对余额进行操作，1000+500=1500，于是你的余额变成了1500块。</p>
+<p>之后你爸爸打电话问：“儿子给你转了500块，收到了吗？”</p>
+<p>再过了一会你妈妈也打电话过来问：“儿子给你转了500块，多买点吃的。”</p>
+<p>这你就纳闷了，明明爸妈都给我转了500余额应该是2000才对，为什么才1500？</p>
+<p>这就是脏读现象，当一个事务修改了数据还未提交的时候，另一个事务使用该数据。如果这个问题不处理那支付宝不是大乱套了。</p>
+<hr>
+<h2 id="事务的特性"><a href="#事务的特性" class="headerlink" title="事务的特性"></a>事务的特性</h2><ol>
+<li>原子性（atomicity）：一个事务是不可分割的，一个事务里的操作，要么全部成功，要么全部失败。</li>
+<li>一致性（consistency）：一个事务执行前后数据的完整性保持一致。</li>
+<li>隔离性（isolation）：一个事务在执行过程中不该受到其他事务影响，每个事务是相互隔离的，互不影响。</li>
+<li>持久性（durability）：指一个事务一旦提交，它对数据库中数据的改变就应该是永久性的。接下来的其他操作或故障不应该对其有任何影响。</li>
+</ol>
+<hr>
+<h2 id="多事务并发下的问题"><a href="#多事务并发下的问题" class="headerlink" title="多事务并发下的问题"></a>多事务并发下的问题</h2><ol>
+<li>脏读：就是一个事务修改了数据，在未提交数据前，另一个事务使用了该数据。</li>
+<li>不可重复读：就是一个事务第一次查看数据，比如说是3，然后一个事务进来修改为了5并提交了事务，第一次的事务再次读的时候发现变成了5就是不可重复读。</li>
+<li>幻读：在对全表进行操作的时候，发现修改了100条记录，在此期间有另一个事务进来新增了一条数据，最后之前明明为100条的数据，发现还有没有被修改的数据行，就跟产生了幻觉一样。</li>
+</ol>
+<hr>
+<h2 id="数据库隔离级别"><a href="#数据库隔离级别" class="headerlink" title="数据库隔离级别"></a>数据库隔离级别</h2><ol>
+<li>读未提交：数据库最低隔离级别，可能会发生脏读，不可重复读，幻读。</li>
+<li>读已提交：不会发生脏读，可能发生不可重复读和幻读。</li>
+<li>可重复读：可以避免脏读和不可重复读，无法避免幻读，mysql默认的隔离级别。</li>
+<li>串行化：数据库读最高隔离级别，可以避免幻读，但是会导致大量超时现象和锁竞争。</li>
+</ol>
+<hr>
+<h2 id="Spring下的事务传播机制"><a href="#Spring下的事务传播机制" class="headerlink" title="Spring下的事务传播机制"></a>Spring下的事务传播机制</h2><p>事务传播行为，既然是传播肯定要有两个东西，才可能发生传播的行为，指的就是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何执行。</p>
+<h3 id="Propagation-Required"><a href="#Propagation-Required" class="headerlink" title="Propagation_Required:"></a>Propagation_Required:</h3><p>默认到事务传播方式，指该方法必须在事务中运行，如果当前没有事务就创建一个事务，如果当前有事务就加入到当前事务中去。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单独调用方法B的时候，会发现上下文中没有事务，则会开启一个事务，当调用方法A的时候，发现上下文环境中没有事务，就会新建一个事务，当调用到方法B的时候，发现已经有A事务的上下文环境就加入到A事务中。</p>
+<h3 id="Propagation-Supports"><a href="#Propagation-Supports" class="headerlink" title="Propagation_Supports:"></a>Propagation_Supports:</h3><p>指该方法不需要事务上下文环境，如果没有上下文环境就非事务执行，如果有上下文环境就加入到该事务中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为SUPPORTS</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.SUPPORTS)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单独调用方法B到时候是以非事务的方式执行方法B，当调用方法A的时候，方法B就加入了方法A的事务中事务的执行。</p>
+<h3 id="Propagation-Mandatory"><a href="#Propagation-Mandatory" class="headerlink" title="Propagation_Mandatory:"></a>Propagation_Mandatory:</h3><p>指方法必须在事务中进行，如果当前没有事务则会抛出异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> methodB();</span><br><span class="line"><span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为MANDATORY</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.MANDATORY)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当单独调用方法B的时候，会因为没有事务的上下文，会抛出IllegalTransactionStateException异常，当调用方法A的时候就会加入事务A中。</p>
+<h3 id="Propagation-Required-new"><a href="#Propagation-Required-new" class="headerlink" title="Propagation_Required_new:"></a>Propagation_Required_new:</h3><p>表示当前方法必须运行在自己的事务中，一个事务将被启动，如果存在当前事务，在方法执行期间，当前事务会被挂起。使用PROPAGATION_REQUIRES_NEW,需要使用 JtaTransactionManager作为事务管理器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRED)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">doSomeThingA();</span><br><span class="line">methodB();</span><br><span class="line">doSomeThingB();</span><br><span class="line"><span class="comment">// do something else</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment">// 事务属性为REQUIRES_NEW</span></span><br><span class="line"><span class="meta">@Transactional</span>(propagation = Propagation.REQUIRES_NEW)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单独调用方法B的时候会新建一个事务运行，当调用方法A的时候，执行到B方法的时候会将事务A挂起，等B提交后，再执行<code>doSomeThingB</code>，如果<code>doSomeThingB</code>执行失败了不会回滚事务B，只会回滚事务A里除了事务B之外的东西。</p>
+<h3 id="Propagation-Not-Supported"><a href="#Propagation-Not-Supported" class="headerlink" title="Propagation_Not_Supported:"></a>Propagation_Not_Supported:</h3><p>表示该方法不应该运行在事务上下文中，如果存在当前事务，当前事务将会被挂起</p>
+<h3 id="Propagation-Nerver"><a href="#Propagation-Nerver" class="headerlink" title="Propagation_Nerver:"></a>Propagation_Nerver:</h3><p>表示当前方法不应该在事务上下文中，如果当前正有一个事务在运行，就会抛出异常</p>
+<h3 id="Propagation-Nested"><a href="#Propagation-Nested" class="headerlink" title="Propagation_Nested:"></a>Propagation_Nested:</h3><p>如果当前已经存在一个事务，那么该方法会在嵌套事务中运行，嵌套的事务可以独立于当前事务进行单独地提交或回滚，如果当前事务不存在，那么其行为与Propagation_Required一样<br>外层事务失败的时候，会回滚内层事务所做的动作。但是内层事务失败并不会引起外层事务的回滚。</p>
 
       
     </div>
@@ -475,8 +512,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/p/999bcd34.html" rel="next" title="网络通信框架（2）---Mina">
-                <i class="fa fa-chevron-left"></i> 网络通信框架（2）---Mina
+              <a href="/p/17eb86ee.html" rel="next" title="线程池参数及类型">
+                <i class="fa fa-chevron-left"></i> 线程池参数及类型
               </a>
             
           </div>
@@ -484,10 +521,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/p/9a526a8e.html" rel="prev" title="同步阻塞IO---BIO">
-                同步阻塞IO---BIO <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -542,8 +575,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -623,6 +665,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的特性"><span class="nav-number">2.</span> <span class="nav-text">事务的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多事务并发下的问题"><span class="nav-number">3.</span> <span class="nav-text">多事务并发下的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库隔离级别"><span class="nav-number">4.</span> <span class="nav-text">数据库隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring下的事务传播机制"><span class="nav-number">5.</span> <span class="nav-text">Spring下的事务传播机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Required"><span class="nav-number">5.1.</span> <span class="nav-text">Propagation_Required:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Supports"><span class="nav-number">5.2.</span> <span class="nav-text">Propagation_Supports:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Mandatory"><span class="nav-number">5.3.</span> <span class="nav-text">Propagation_Mandatory:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Required-new"><span class="nav-number">5.4.</span> <span class="nav-text">Propagation_Required_new:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Not-Supported"><span class="nav-number">5.5.</span> <span class="nav-text">Propagation_Not_Supported:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Nerver"><span class="nav-number">5.6.</span> <span class="nav-text">Propagation_Nerver:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Propagation-Nested"><span class="nav-number">5.7.</span> <span class="nav-text">Propagation_Nested:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
