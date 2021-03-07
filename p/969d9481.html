@@ -88,7 +88,7 @@
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020-08-25/cas.png">
 <meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
 <meta property="article:published_time" content="2020-08-25T15:29:00.000Z">
-<meta property="article:modified_time" content="2020-09-29T15:04:38.010Z">
+<meta property="article:modified_time" content="2021-03-07T14:59:44.849Z">
 <meta property="article:author" content="MolZhao">
 <meta property="article:tag" content="高并发">
 <meta name="twitter:card" content="summary">
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.1k 字
+                  1.3k 字
                 </span>
               
 
@@ -458,6 +458,8 @@
 <p><code>LOCK_IF_MP(%4)</code>其中的MP指的是Machine Processprs如果一个CPU是需要用<code>cmpxchg</code>就可以了,但如果多个CPU还要加前面的LOCK指令。</p>
 <p>最终的实现：是<code>lock cmpxchg</code>指令</p>
 <p>硬件：lock指令在执行后面指令的时候锁定一个北桥信号（不采用锁总线的方式）。</p>
+<p>LOCK会锁定这块内存区域到缓存行（缓存行锁定）并写回主内存。</p>
+<p>inter64位开发手册对lock指令对解释：<br>1.会将当前处理器缓存行对数据立即写回到系统内存。<br>2.这个写回内存到操作会引起在其他CPU缓存了该内存地址到数据无效（MESI协议）<br>3.提供内存屏障功能，使得lock前后指令不能重排序ß</p>
 <p><a href="https://blog.csdn.net/prstaxy/article/details/51802220?utm_source=blogxgwz7" target="_blank" rel="noopener">具体实现分析原文链接</a></p>
 <h3 id="CAS是否真的是原子性"><a href="#CAS是否真的是原子性" class="headerlink" title="CAS是否真的是原子性"></a>CAS是否真的是原子性</h3><p>问题：如果在比较的时候，已经比较好了之后，但还没修改值之前，被其他线程修改了，那么其他线程的值会被当前值覆盖。</p>
 <p>如果底层单单是一个<code>cmpxchg</code>指令，有多个CPU，他是不具有原子性的。但是在多个CPU的情况下，<code>LOCK</code>指令起到了关键性的作用，即一个CPU对一个值进行修改的时候，不允许其他CPU修改这个值。也是因为这个lock给cmpxchg提供了原子性。</p>
