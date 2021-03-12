@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="代码质量," />
+  <meta name="keywords" content="线上诊断," />
 
 
 
@@ -79,21 +79,23 @@
 
 
 
-<meta name="description" content="前言组合模式（Composite Pattern），又叫部分整体模式，感觉就是把一组类似对象当作一个对象来进行操作，依据树形结构来组合对象，用来表示部分和整体这种结构，他是将类和对象以一定形式组成在一起的，所以属于结构型模式。 主要解决的问题：它在我们树型结构的问题中，模糊了简单元素和复杂元素的概念，客户程序可以像处理简单元素一样来处理复杂元素，从而使得客户程序与复杂元素的内部结构解耦，主要是与树">
+<meta name="description" content="排查CPU使用率过高1.先通过top命令找到消耗CPU很高的进程ID，假设是我们找到的进程ID是10923  2.执行top -p 10923 -H，获取当前进程下所有线程的信息  3.找到其中消耗CPU特别高的线程ID，如10924 4.将第三步获取到的线程ID转成十六进制10924 -&gt; 0x2aac 5.执行jstack 10923 &gt; jstack10923.out对当前进程做">
 <meta property="og:type" content="article">
-<meta property="og:title" content="组合模式的见解与案例">
-<meta property="og:url" content="http://yoursite.com/p/155fd47b.html">
+<meta property="og:title" content="线上问题排查指南">
+<meta property="og:url" content="http://yoursite.com/p/52cab875.html">
 <meta property="og:site_name" content="Molzhao">
-<meta property="og:description" content="前言组合模式（Composite Pattern），又叫部分整体模式，感觉就是把一组类似对象当作一个对象来进行操作，依据树形结构来组合对象，用来表示部分和整体这种结构，他是将类和对象以一定形式组成在一起的，所以属于结构型模式。 主要解决的问题：它在我们树型结构的问题中，模糊了简单元素和复杂元素的概念，客户程序可以像处理简单元素一样来处理复杂元素，从而使得客户程序与复杂元素的内部结构解耦，主要是与树">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020/2020-12-27/%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020/2020-12-27/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png">
-<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png">
-<meta property="article:published_time" content="2020-12-27T12:08:00.000Z">
-<meta property="article:modified_time" content="2020-12-27T13:35:11.760Z">
+<meta property="og:description" content="排查CPU使用率过高1.先通过top命令找到消耗CPU很高的进程ID，假设是我们找到的进程ID是10923  2.执行top -p 10923 -H，获取当前进程下所有线程的信息  3.找到其中消耗CPU特别高的线程ID，如10924 4.将第三步获取到的线程ID转成十六进制10924 -&gt; 0x2aac 5.执行jstack 10923 &gt; jstack10923.out对当前进程做">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/topH.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/thread.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top1.png">
+<meta property="og:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/jprofiler.png">
+<meta property="article:published_time" content="2021-03-12T05:51:00.000Z">
+<meta property="article:modified_time" content="2021-03-12T09:10:09.055Z">
 <meta property="article:author" content="MolZhao">
-<meta property="article:tag" content="代码质量">
+<meta property="article:tag" content="线上诊断">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020/2020-12-27/%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84.png">
+<meta name="twitter:image" content="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top.png">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/p/155fd47b.html"/>
+  <link rel="canonical" href="http://yoursite.com/p/52cab875.html"/>
 
 
 
 
 
-  <title>组合模式的见解与案例 | Molzhao</title>
+  <title>线上问题排查指南 | Molzhao</title>
   
 
 
@@ -300,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/155fd47b.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/p/52cab875.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="MolZhao">
@@ -317,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">组合模式的见解与案例</h1>
+          <h1 class="post-title" itemprop="name headline">线上问题排查指南</h1>
         
 
         <div class="post-meta">
@@ -329,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-27T20:08:00+08:00">
-                2020-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-12T13:51:00+08:00">
+                2021-03-12
               </time>
             
 
@@ -352,8 +354,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/Linux/index.html" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
                   </a>
                 </span>
 
@@ -370,8 +372,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/p/155fd47b.html#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/p/155fd47b.html" itemprop="commentCount"></span>
+                <a href="/p/52cab875.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/p/52cab875.html" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -398,7 +400,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.5k 字
+                  1.1k 字
                 </span>
               
 
@@ -414,7 +416,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -435,51 +437,30 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>组合模式（Composite Pattern），又叫部分整体模式，感觉就是把一组类似对象当作一个对象来进行操作，依据树形结构来组合对象，用来表示部分和整体这种结构，他是将类和对象以一定形式组成在一起的，所以属于结构型模式。</p>
-<p>主要解决的问题：它在我们树型结构的问题中，模糊了简单元素和复杂元素的概念，客户程序可以像处理简单元素一样来处理复杂元素，从而使得客户程序与复杂元素的内部结构解耦，主要是与树枝和叶子同时实现一个接口来实现的。</p>
-<p>举个简单的例子，如下图的文件夹结构，我们对于这个结构肯定会非常熟悉，对于这样的结构我们称之为树形结构。如下图中<code>.java</code>文件我们可以理解为叶子节点，而<code>简单缓存队列批量保存</code>可以当作容器，<code>cache-frame</code>也可以当作容器，他们都可以被双击点开，而容器可以在下面加入新的叶子节点或新的子容器，我们不需要判别是否是容器还是叶子结点，都可以通过双击来遍历这个结构。这就是组合模式的设计动机：<code>组合模式定义了如何将容器对象和叶子对象进行递归组合，使得客户在使用的过程中无须进行区分，可以对他们进行一致的处理。</code></p>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020/2020-12-27/%E6%96%87%E4%BB%B6%E5%A4%B9%E7%BB%93%E6%9E%84.png" alt="文件夹结构"></p>
-<hr>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>允许你将对象组合成树形结构来表现“整体/部分”层次结构。组合能让客户以一致的方式处理个别对象以及对象组合。</p>
-<p>组合模式对单个对象(叶子对象)和组合对象(组合对象)具有一致性，它将对象组织到树结构中，可以用来描述整体与部分的关系。同时它也模糊了简单元素(叶子对象)和复杂元素(容器对象)的概念，使得客户能够像处理简单元素一样来处理复杂元素，从而使客户程序能够与复杂元素的内部结构解耦。</p>
-<p><strong>最关键就是叶子对象和组合对象实现相同的接口。这就是组合模式能够将叶子节点和对象节点进行一致处理的原因。</strong></p>
-<hr>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p><strong>优点：</strong></p>
-<ol>
-<li>高层模块调用简单</li>
-<li>节点可以自由增加</li>
-</ol>
-<p><strong>缺点：</strong></p>
-<ol>
-<li>在使用组合模式时，其叶子和树枝的声明都是实现类，而不是接口，违反了依赖倒置原则。</li>
-</ol>
-<hr>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>主要由如下角色：</p>
-<ol>
-<li>组合接口（Component）：组合中的对象声明接口，在适当的情况下，实现所有类共有接口的默认行为。声明一个接口用于访问和管理Component子部件。</li>
-<li>容器对象（Composite）：容器对象，定义有枝节点行为，用来存储子部件，在Component接口中实现与子部件有关操作，如增加(add)和删除(remove)等。</li>
-<li>叶子对象（Leaf）：没有子节点</li>
-</ol>
-<p><strong>类图：</strong></p>
-<p>该类图请配合下面的案例查看</p>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2020/2020-12-27/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F%E7%B1%BB%E5%9B%BE.png" alt="组合模式类图"></p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>最近是第七次人口普查，我们就以人口普查作为案例，我们知道人口普查是一项重要的工作，需要人人都进行配合，才能完成最后的结果，所以一般都是从地方开始统计，在上报到省份直至中央进行统计，如以浙江省为例，需要下面的地级市先开始各自进行统计，如嘉兴市又需要下面的五县两区进行统计，统计好了嘉兴进行汇总报告给浙江省。就是这么一级级下来，而他们都具有一个的共同功能就是统计人口。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 角色Component：组合中的对象声明接口，在适当的情况下，实现所有类共有接口的默认行为。声明一个接口用于访问和管理Component子部件</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICounter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">count</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="排查CPU使用率过高"><a href="#排查CPU使用率过高" class="headerlink" title="排查CPU使用率过高"></a>排查CPU使用率过高</h2><p>1.先通过<code>top</code>命令找到消耗CPU很高的进程ID，假设是我们找到的进程ID是10923</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top.png" alt="top"></p>
+<p>2.执行<code>top -p 10923 -H</code>，获取当前进程下所有线程的信息</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/topH.png" alt="topH"></p>
+<p>3.找到其中消耗CPU特别高的线程ID，如<code>10924</code></p>
+<p>4.将第三步获取到的线程ID转成十六进制<code>10924 -&gt; 0x2aac</code></p>
+<p>5.执行<code>jstack 10923 &gt; jstack10923.out</code>对当前进程做dump操作，并输出所有的线程信息</p>
+<p>6.找到对应的线程信息内容<code>cat jstack10923.out | grep 2aac -C 10</code><br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/thread.png" alt="thread"></p>
+<h2 id="排查OOM的问题"><a href="#排查OOM的问题" class="headerlink" title="排查OOM的问题"></a>排查OOM的问题</h2><p>1.先通过<code>top</code>命令找到消耗内存很高的进程ID，假设是我们找到的进程ID是10923</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top1.png" alt="top1"></p>
+<p>2.使用<code>jstat -gcutil 10923 1000 10</code>工具按照指定间隔，看一下统计信息，这里会每隔一段时间显示一下，包括新生代的两个S0、s1区、Eden区，以及老年代的内存使用率，还有young gc以及full gc的次数。其中1000代表的是1000毫秒，10代表的打印10次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@zyj tmp]<span class="comment"># jstat -gcutil 10923 1000 10</span></span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.15  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">S0     Heap上的Survivor space 0区已使用空间的百分比</span><br><span class="line">S1     Heap上的Survivor space 1区已使用空间的百分比</span><br><span class="line">E      Heap上的Eden space区已使用空间的百分比</span><br><span class="line">O      Heap上的Old space区已使用空间的百分比</span><br><span class="line">P      Perm space区已使用的空间百分比</span><br><span class="line">YGC    从应用程序启动到采样时发生的Young GC的次数   </span><br><span class="line">YGCT   从应用程序启动到采样时发生的Young GC所用的时间（单位秒）</span><br><span class="line">FGC    从应用程序启动到采样时发生的Full GC的次数</span><br><span class="line">FGCT   从应用程序启动到采样时Full GC所用的时间（单位秒）</span><br><span class="line">GCT    从应用程序启动到采样时用于垃圾回收的总时间（单位秒）</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 容器：容器对象，定义有枝节点行为，用来存储子部件，在Component接口中实现与子部件有关操作，如增加(add)和删除(remove)等</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Composite</span> <span class="keyword">implements</span> <span class="title">ICounter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;ICounter&gt; container = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(ICounter counter)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> container.add(counter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(ICounter counter)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> container.remove(counter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;ICounter&gt; <span class="title">getChild</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> container;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> container.stream().mapToInt(ICounter::count).sum();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">S0      S1       E       O      YGC     FGC</span><br><span class="line">26.80   0.00   10.50    89.90    86     954</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.molzhao;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 叶子节点: 叶子节点。叶子节点没有子节点。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">City</span> <span class="keyword">implements</span> <span class="title">ICounter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer sum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">City</span><span class="params">(Integer sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.sum = sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getSum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSum</span><span class="params">(Integer sum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.sum = sum;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.City;</span><br><span class="line"><span class="keyword">import</span> xyz.molzhao.Composite;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.assertEquals;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 该案例实现一个统计的功能，主要统计整个中国的人口普查情况，需要各地方市统计好了，上报到各个省份，然后在上报给中央主要实现这样一个功能</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompositeTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCompositeTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Composite china = <span class="keyword">new</span> Composite();</span><br><span class="line">        <span class="comment">// 新建浙江省容器</span></span><br><span class="line">        Composite zheJiang = <span class="keyword">new</span> Composite();</span><br><span class="line">        <span class="comment">// 嘉兴市统计完为1W人</span></span><br><span class="line">        City jiaxing = <span class="keyword">new</span> City(<span class="number">10000</span>);</span><br><span class="line">        City hangzhou = <span class="keyword">new</span> City(<span class="number">20000</span>);</span><br><span class="line">        zheJiang.add(jiaxing);</span><br><span class="line">        zheJiang.add(hangzhou);</span><br><span class="line">        china.add(zheJiang);</span><br><span class="line"></span><br><span class="line">        City shanghai = <span class="keyword">new</span> City(<span class="number">30000</span>);</span><br><span class="line">        china.add(shanghai);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        这边组成了</span></span><br><span class="line"><span class="comment">        -中国</span></span><br><span class="line"><span class="comment">        ---浙江</span></span><br><span class="line"><span class="comment">        -----嘉兴</span></span><br><span class="line"><span class="comment">        -----杭州</span></span><br><span class="line"><span class="comment">        ---上海</span></span><br><span class="line"><span class="comment">        这样的一个数据结构</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        assertEquals(<span class="number">60000</span>, china.count());</span><br><span class="line">        assertEquals(<span class="number">30000</span>, shanghai.count());</span><br><span class="line">        assertEquals(<span class="number">30000</span>, zheJiang.count());</span><br><span class="line">        assertEquals(<span class="number">10000</span>, jiaxing.count());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 最后结果</span><br><span class="line">中国总人数为：60000</span><br><span class="line">上海总人数为：30000</span><br><span class="line">浙江总人数为：30000</span><br><span class="line">嘉兴总人数为：10000</span><br></pre></td></tr></table></figure>
-
-<h3 id="案例地址"><a href="#案例地址" class="headerlink" title="案例地址"></a>案例地址</h3><p>欢迎大家访问我的Github地址，如果喜欢的话，希望能给个Star，<a href="https://github.com/Normcorer/Composite-Pattern.git" target="_blank" rel="noopener">点击此处获取本案例源码</a></p>
-<hr>
-<blockquote>
-<p>如果有小伙伴，想要一起交流学习的，欢迎添加博主微信。</p>
-</blockquote>
-<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/Common/WeChat.png" alt="weChat"></p>
+<p>其实如果大家了解原理，应该知道，一般来说大量的对象涌入内存，结果始终不能回收，会出现的情况就是，快速撑满年轻代，然后young gc几次，根本回收不了什么对象，导致survivor区根本放不下，然后大量对象涌入老年代。老年代很快也满了，然后就频繁full gc，但是也回收不掉。</p>
+<p>然后对象持续增加不就oom了，内存放不下了，爆了呗。</p>
+<p>所以jstat先看一下基本情况，马上就能看出来，其实就是大量对象没法回收，一直在内存里占据着，然后就差不多内存快爆了。</p>
+<p>3.使用<code>jmap -histo 10923</code>命令查看可以打印出当前堆中所有每个类的实例数量和内存占用，如下，class name是每个类的类名<code>[B是byte类型，[C是char类型，[I是int类型</code>，bytes是这个类的所有示例占用内存大小，instances是这个类的实例数量。</p>
+<p>4.使用<code>jmap -dump:format=b,file=/tmp/10923dump.hprof 10923</code>接着就可以使用Jprofiler工具看下是哪个对象占用空间最大了。</p>
+<p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/jprofiler.png" alt="dump信息"></p>
+<p>人家肯定会问你有没有处理过线上的问题，你就说有，最简单的，你说有个小伙子用了本地缓存，就放map里，结果没控制map大小，可以无限扩容，最终导致内存爆了，后来解决方案就是用了一个<code>GuavaCache</code>框架，通过过期策略清理掉旧数据，控制内存占用就好了。</p>
+<p>另外，务必提到，线上jvm必须配置-XX:+HeapDumpOnOutOfMemoryError，-XX:HeapDumpPath=/path/heap/dump。因为这样就是说OOM的时候自动导出一份内存快照，你就可以分析发生OOM时的内存快照了，到底是哪里出现的问题。</p>
 
       
     </div>
@@ -497,7 +478,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F/index.html" rel="tag"># 代码质量</a>
+            <a href="/tags/%E7%BA%BF%E4%B8%8A%E8%AF%8A%E6%96%AD/index.html" rel="tag"># 线上诊断</a>
           
         </div>
       
@@ -525,8 +506,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/p/fa8bb93b.html" rel="next" title="Ping命令如何测网速">
-                <i class="fa fa-chevron-left"></i> Ping命令如何测网速
+              <a href="/p/419d2893.html" rel="next" title="事务隔离及事务传播机制">
+                <i class="fa fa-chevron-left"></i> 事务隔离及事务传播机制
               </a>
             
           </div>
@@ -534,10 +515,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/p/2aaa04f0.html" rel="prev" title="Linux系统分区与扩容">
-                Linux系统分区与扩容 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -692,7 +669,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">2.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特点"><span class="nav-number">3.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构"><span class="nav-number">4.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">5.</span> <span class="nav-text">案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">5.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">5.2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例地址"><span class="nav-number">5.3.</span> <span class="nav-text">案例地址</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#排查CPU使用率过高"><span class="nav-number">1.</span> <span class="nav-text">排查CPU使用率过高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排查OOM的问题"><span class="nav-number">2.</span> <span class="nav-text">排查OOM的问题</span></a></li></ol></div>
             
 
           </div>

@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>线上问题排查指南</title>
+      <link href="/p/52cab875.html"/>
+      <url>/p/52cab875.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="排查CPU使用率过高"><a href="#排查CPU使用率过高" class="headerlink" title="排查CPU使用率过高"></a>排查CPU使用率过高</h2><p>1.先通过<code>top</code>命令找到消耗CPU很高的进程ID，假设是我们找到的进程ID是10923</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top.png" alt="top"></p><p>2.执行<code>top -p 10923 -H</code>，获取当前进程下所有线程的信息</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/topH.png" alt="topH"></p><p>3.找到其中消耗CPU特别高的线程ID，如<code>10924</code></p><p>4.将第三步获取到的线程ID转成十六进制<code>10924 -&gt; 0x2aac</code></p><p>5.执行<code>jstack 10923 &gt; jstack10923.out</code>对当前进程做dump操作，并输出所有的线程信息</p><p>6.找到对应的线程信息内容<code>cat jstack10923.out | grep 2aac -C 10</code><br><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/thread.png" alt="thread"></p><h2 id="排查OOM的问题"><a href="#排查OOM的问题" class="headerlink" title="排查OOM的问题"></a>排查OOM的问题</h2><p>1.先通过<code>top</code>命令找到消耗内存很高的进程ID，假设是我们找到的进程ID是10923</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/top1.png" alt="top1"></p><p>2.使用<code>jstat -gcutil 10923 1000 10</code>工具按照指定间隔，看一下统计信息，这里会每隔一段时间显示一下，包括新生代的两个S0、s1区、Eden区，以及老年代的内存使用率，还有young gc以及full gc的次数。其中1000代表的是1000毫秒，10代表的打印10次</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@zyj tmp]<span class="comment"># jstat -gcutil 10923 1000 10</span></span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.11  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.13  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br><span class="line">  0.00  39.80   9.15  72.72  97.87  95.09    327    1.111     3    0.191    1.302</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">S0     Heap上的Survivor space 0区已使用空间的百分比</span><br><span class="line">S1     Heap上的Survivor space 1区已使用空间的百分比</span><br><span class="line">E      Heap上的Eden space区已使用空间的百分比</span><br><span class="line">O      Heap上的Old space区已使用空间的百分比</span><br><span class="line">P      Perm space区已使用的空间百分比</span><br><span class="line">YGC    从应用程序启动到采样时发生的Young GC的次数   </span><br><span class="line">YGCT   从应用程序启动到采样时发生的Young GC所用的时间（单位秒）</span><br><span class="line">FGC    从应用程序启动到采样时发生的Full GC的次数</span><br><span class="line">FGCT   从应用程序启动到采样时Full GC所用的时间（单位秒）</span><br><span class="line">GCT    从应用程序启动到采样时用于垃圾回收的总时间（单位秒）</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">S0      S1       E       O      YGC     FGC</span><br><span class="line">26.80   0.00   10.50    89.90    86     954</span><br></pre></td></tr></table></figure><p>其实如果大家了解原理，应该知道，一般来说大量的对象涌入内存，结果始终不能回收，会出现的情况就是，快速撑满年轻代，然后young gc几次，根本回收不了什么对象，导致survivor区根本放不下，然后大量对象涌入老年代。老年代很快也满了，然后就频繁full gc，但是也回收不掉。</p><p>然后对象持续增加不就oom了，内存放不下了，爆了呗。</p><p>所以jstat先看一下基本情况，马上就能看出来，其实就是大量对象没法回收，一直在内存里占据着，然后就差不多内存快爆了。</p><p>3.使用<code>jmap -histo 10923</code>命令查看可以打印出当前堆中所有每个类的实例数量和内存占用，如下，class name是每个类的类名<code>[B是byte类型，[C是char类型，[I是int类型</code>，bytes是这个类的所有示例占用内存大小，instances是这个类的实例数量。</p><p>4.使用<code>jmap -dump:format=b,file=/tmp/10923dump.hprof 10923</code>接着就可以使用Jprofiler工具看下是哪个对象占用空间最大了。</p><p><img src="https://molzhao-pic.oss-cn-beijing.aliyuncs.com/2021/2021-03-12/jprofiler.png" alt="dump信息"></p><p>人家肯定会问你有没有处理过线上的问题，你就说有，最简单的，你说有个小伙子用了本地缓存，就放map里，结果没控制map大小，可以无限扩容，最终导致内存爆了，后来解决方案就是用了一个<code>GuavaCache</code>框架，通过过期策略清理掉旧数据，控制内存占用就好了。</p><p>另外，务必提到，线上jvm必须配置-XX:+HeapDumpOnOutOfMemoryError，-XX:HeapDumpPath=/path/heap/dump。因为这样就是说OOM的时候自动导出一份内存快照，你就可以分析发生OOM时的内存快照了，到底是哪里出现的问题。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 线上诊断 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>事务隔离及事务传播机制</title>
       <link href="/p/419d2893.html"/>
       <url>/p/419d2893.html</url>
